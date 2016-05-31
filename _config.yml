@@ -5,6 +5,6 @@ description: I'm a software developer in Ann Arbor, MI.
 
 # Build settings
 markdown: kramdown
-exclude: ["README.md"]
+exclude: ["README.md", "LICENSE"]
 sass:
   style: compressed
