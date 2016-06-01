@@ -13,13 +13,12 @@ I'm a software developer in Ann Arbor, MI.
 
 ## My Open-Source Projects
 
-* [avsh](https://github.com/MasonM/avsh) - Augmented Vagrant SsH. A faster alternative to `vagrant
-  ssh` with automatic synced folder switching.
-* [Apeye](http://apeye.org/) - An easily-embeddable Javascript API client intended to improve
-  documentation.
-* [Django Conference](https://bitbucket.org/hssonline/django-conference) - A complete conference
-  management suite for Django, intended for non-profit organizations.
-* [Django Elect](https://bitbucket.org/hssonline/django-elect) - A simple voting app intended for
-  small-scale elections in academic organizations.
-* [VMPR](https://github.com/MasonM/VMPR) - Virgin Mobile PIN Randomizer. A script for use by Virgin
-  Mobile customers that changes their PIN every few minutes to mitigate security issues.
+* [avsh](https://github.com/MasonM/avsh) - A faster alternative to `vagrant ssh`, with extras.
+* [astojs](https://bitbucket.org/MasonM/astojs) - A transpiler for Applescript to ECMAScript 6.
+* [APEye](http://apeye.org/) - An easily-embeddable Javascript API client.
+* [django-conference](https://bitbucket.org/hssonline/django-conference) - A conference
+  management suite.
+* [django-elect](https://bitbucket.org/hssonline/django-elect) - A voting app for
+  small-scale elections.
+* [VMPR](https://github.com/MasonM/VMPR) - A script to help Virgin Mobile customers mitigate
+  security issues.
