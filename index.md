@@ -9,7 +9,7 @@ layout: default
 * [Github](https://github.com/MasonM)
 
 {:#about}
-I'm a software developer in Ann Arbor, MI.
+I'm a software developer in Seattle, WA.
 
 ## My Open-Source Projects
 
