@@ -1,7 +1,7 @@
 # Site settings
 title: Mason's Homepage
 tag_text: Mason Malone
-description: Home page for Mason Malone, a software developer in Ann Arbor, MI.
+description: Home page for Mason Malone, a software developer in Seattle, WA
 
 # Build settings
 markdown: kramdown

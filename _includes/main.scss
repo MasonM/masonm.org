@@ -1,0 +1,96 @@
+@import url(http://fonts.googleapis.com/css?family=Inconsolata:400,700|Montserrat:700);
+
+html {
+  font: 16px/1.5 Inconsolata, sans-serif;
+}
+
+body {
+  margin: 2rem 0 5rem;
+  color: #333;
+}
+
+a {
+  background: transparent;
+  color: #0074d9;
+  text-decoration: none;
+}
+
+a:focus {
+  outline: thin dotted;
+}
+
+a:active, a:hover {
+  outline: 0;
+}
+
+a:hover, a:focus {
+  text-decoration: underline;
+}
+
+h1 {
+  font-size: 2.5em;
+  margin: 0.67em 0;
+}
+
+h1, h2 {
+  font-family: Montserrat, sans-serif;
+  margin: 0 0 0.5rem -0.1rem;
+  line-height: 1;
+  color: #111;
+  text-align: center;
+}
+
+p, ul {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+ul {
+  padding-left: 1.5rem;
+}
+
+ul#links {
+  padding-left: 1.5rem;
+  padding-left: 0;
+  list-style: none;
+  margin-bottom: 2.5rem;
+  text-align: center;
+  li {
+    display: inline;
+    &:before { content: "| "; }
+    &:first-child:before { content: ""; }
+  }
+}
+
+p#about {
+  text-align: center;
+}
+
+.container {
+  max-width: 30rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+code {
+  padding: .1rem .25rem;
+  background-color: #eee;
+  font-family: inherit;
+}
+
+@media (min-width: 30rem) {
+  h1 {
+    font-size: 3em;
+  }
+  h2 {
+    margin-top: 2.5rem;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  html {
+    font-size: 20px;
+  }
+  body {
+    margin-top: 5rem;
+  }
+}
