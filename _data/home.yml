@@ -1,70 +1,46 @@
 navbar_entries:
-  - title: about
-    url: about
+  - title: "&#x6d;ason&#64;masonm.org"
+    url: mailto:&#x6d;ason&#64;masonm.org
 
-  - title: blog
-    url: blog
+  - title: PGP Key
+    url: https://pgp.mit.edu/pks/lookup?op=vindex&search=0xFC3A49152913674A
 
-  - title: website
-    url: https://www.abhinav.co
+  - title: Github
+    url: https://github.com/MasonM
 
 project_entries:
-  - title: Project 1
-    url: overview-post
-    desc: This is an example project, configured in _data/home.yml
+  - title: wiremock-jwt-extension
+    url: https://github.com/MasonM/wiremock-jwt-extension
+    desc: WireMock extension for matching requests with JSON Web Tokens (JWT) 
 
-  - title: Project 2
-    url: overview-post
-    desc: Projects are shown in card layout
+  - title: wiremock-stub-mapping-tracker
+    url: https://github.com/MasonM/wiremock-stub-mapping-tracker
+    desc: WireMock extensions to track stub mapping usage 
 
-  - title: Project 3
-    url: overview-post
-    desc: You can control visibility from _config.yml file
-
-  - title: Project 4
-    url: overview-post
-    desc: This project uses highlight markup, configured in _data/home.yml
-    highlight: WIP
-
-  - title: Project 5
-    url: overview-post
-    desc: Moonwalk also has horizontal list (used in header and footer)
-    highlight: WIP
-
-  - title: Project 6
-    url: overview-post
-    desc: It also has a scalable vertical list (in case you need it)
+  - title: ds_extract_and_pack
+    url: https://github.com/MasonM/ds_extract_and_pack
+    desc: Tooling to help mod Dark Souls
 
 old_project_entries:
-  - title: Soopr
-    url: https://www.soopr.co
-    desc: Delight your readers - add beautiful share and like buttons easily to your websites 
-    highlight: NEW
+  - title: avsh
+    url: https://github.com/MasonM/avsh
+    desc: A faster alternative to vagrant ssh, with extras.
 
-  - title: Cookie
-    url: https://github.com/abhinavs/cookie
-    desc: An open source landing website with supporting pages and integrated blog
+  - title: astojs
+    url: https://github.com/MasonM/astojs
+    desc: A transpiler for Applescript to ECMAScript 6.
 
-  - title: Moonwalk
-    url: https://github.com/abhinavs/moonwalk
-    desc: A fast and minimalist Jekyll blog theme with clean dark mode
+  - title: django-conference
+    url: https://github.com/MasonM/django-conference
+    desc: A conference management suite.
 
-  - title: Humangous
-    url: https://www.humangous.co
-    desc: The better people know you, the better they collaborate
+  - title: django-elect
+    url: https://github.com/MasonM/django-elect
+    desc: A voting app for small-scale elections.
 
-footer_entries:
-  - title: abhinav's homepage
-    url: https://www.abhinav.co
-
-  - title: twitter
-    url: https://twitter.com/abhinav
-
-  - title: github
-    url: https://github.com/abhinavs
-
-  - title: feed
-    url: feed.xml
+  - title: VMPR
+    url: https://github.com/MasonM/VMPR
+    desc: A script to help Virgin Mobile customers mitigate security issues.
 
 misc_entries:
   - title: this is an example vertical list
