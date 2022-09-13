@@ -18,9 +18,6 @@
     {% endcapture %}
     {{ styles | scssify }}
   </style>
-  {% if site.theme_config.appearance_toggle %}
-    {% include toggle_theme_js.html %}
-  {% endif %}
 
   {%- include custom_head.html -%}
 </head>
