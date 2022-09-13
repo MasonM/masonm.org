@@ -20,7 +20,7 @@ project_entries:
     url: https://github.com/MasonM/wiremock-stub-mapping-tracker
     desc: WireMock extensions to track stub mapping usage 
 
-  - title: ds_extract_and_pack
+  - title: Dark Souls Extract & Pack
     url: https://github.com/MasonM/ds_extract_and_pack
     desc: Tooling to help mod Dark Souls
 
