@@ -70,25 +70,6 @@ html {
     --code-text: #9D174D;
     --share-text: #999;
 }
-// -------------- THEME SWITCHER -------------- //
-@mixin dark-appearance {
-  html, body  {
-      --headings: #74c0fc;
-      --links: #91A7FF;
-      --highlight: #41C7C7;
-      --bg: #1f242A;
-      --bg-secondary: #323945;
-      --text: #adb5bd;
-      --code-text: #91A7FF;
-      --share-text: #C4C4C4;
-  };
-}
-html[data-theme="dark"] { @include dark-appearance; }
-
-@media (prefers-color-scheme: dark) {
-  body[data-theme="auto"] { @include dark-appearance; }
-}
-// -------------------------------------------- //
 
 html, body {
     background-color: var(--bg);

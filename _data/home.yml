@@ -1,5 +1,8 @@
 navbar_entries:
-  - title: "&#x6d;ason&#64;masonm.org"
+  - title: Home
+    url: /
+
+  - title: Email
     url: mailto:&#x6d;ason&#64;masonm.org
 
   - title: PGP Key
