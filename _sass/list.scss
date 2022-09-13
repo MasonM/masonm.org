@@ -6,7 +6,7 @@ ul.horizontal-list {
   flex-wrap: wrap;
 
   li {
-    display:inline;
+    display: inline;
     margin-right: 1em;
   }
 
@@ -15,6 +15,11 @@ ul.horizontal-list {
     font-weight: normal
   }
 
+}
+
+header .horizontal-list li:nth-child(n+2):before {
+  content: "|";
+  margin-right: 1em;
 }
 
 .card {
