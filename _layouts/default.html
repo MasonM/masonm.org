@@ -1,22 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="{{ site.description }}">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ site.title }}</title>
-  <style>
-  {% capture styles %}
-    {% include main.scss %}
-  {% endcapture %}
-{{ styles | scssify }}
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>{{ site.tag_text }}</h1>
-    {{ content }}
-  </div>
-</body>
+<html lang="{{ page.lang | default: "en" }}" class="html" data-theme="{{ site.theme_config.appearance | default: "auto" }}">
+  {%- include head.html -%}
+  <body>
+    <main class="page-content" aria-label="Content">
+      <div class="w">
+        {{ content }}
+      </div>
+    </main>
+  </body>
 </html>

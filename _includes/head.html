@@ -1,0 +1,26 @@
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>
+    {% if page.title %}
+      {{ page.title }}
+    {% else %}
+      {{ site.title }}
+    {% endif %}
+  </title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/{{ site.favicon | relative_url }}" />
+  <style>
+    {% capture styles %}
+      {% include main.scss %}
+    {% endcapture %}
+    {{ styles | scssify }}
+  </style>
+  {% if site.theme_config.appearance_toggle %}
+    {% include toggle_theme_js.html %}
+  {% endif %}
+
+  {%- include custom_head.html -%}
+</head>
