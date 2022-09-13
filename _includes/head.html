@@ -2,7 +2,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{% if page.title %} {{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
-  <link rel="shortcut icon" type="image/x-icon" href="/{{ site.favicon | relative_url }}" />
+  <link rel="icon" href="data:,">
+
   <style>{% capture styles %} {% include main.scss %} {% endcapture %}{{ styles | scssify }}</style>
 
   {%- include custom_head.html -%}

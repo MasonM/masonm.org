@@ -8,7 +8,7 @@ navbar_entries:
   - title: PGP Key
     url: https://pgp.mit.edu/pks/lookup?op=vindex&search=0xFC3A49152913674A
 
-  - title: Github
+  - title: GitHub
     url: https://github.com/MasonM
 
 project_entries:
