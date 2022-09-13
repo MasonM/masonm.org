@@ -25,6 +25,14 @@ project_entries:
     desc: Tooling to help mod Dark Souls
 
 old_project_entries:
+  - title: apeye
+    url: https://github.com/MasonM/apeye
+    desc: jQuery widget to help document and test APIs
+
+  - title: wiremock-jsextend
+    url: https://github.com/MasonM/wiremock-jsextend
+    desc: WireMock meta-extension to manage JS-based extensions
+
   - title: avsh
     url: https://github.com/MasonM/avsh
     desc: A faster alternative to vagrant ssh, with extras.
@@ -44,6 +52,10 @@ old_project_entries:
   - title: VMPR
     url: https://github.com/MasonM/VMPR
     desc: A script to help Virgin Mobile customers mitigate security issues.
+
+  - title: postgres_select_tracker
+    url: https://github.com/MasonM/postgres_select_tracker
+    desc: PL/pgSQL functions to record selected rows to a separate table
 
 misc_entries:
   - title: this is an example vertical list
