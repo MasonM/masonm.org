@@ -6,7 +6,7 @@ navbar_entries:
     url: mailto:&#x6d;ason&#64;masonm.org
 
   - title: PGP
-    url: https://pgp.mit.edu/pks/lookup?op=vindex&search=0xFC3A49152913674A
+    url: https://keys.openpgp.org/search?q=A5D5F9D424226C32FF200AC8FC3A49152913674A
 
   - title: GitHub
     url: https://github.com/MasonM
