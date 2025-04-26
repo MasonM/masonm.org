@@ -12,6 +12,10 @@ navbar_entries:
     url: https://github.com/MasonM
 
 project_entries:
+  - title: Argo Workflows
+    url: https://github.com/argoproj/argo-workflows/
+    desc: Kubernetes-based workflow orchestration engine
+
   - title: wiremock-jwt-extension
     url: https://github.com/MasonM/wiremock-jwt-extension
     desc: WireMock extension for matching requests with JSON Web Tokens (JWT) 
@@ -20,11 +24,11 @@ project_entries:
     url: https://github.com/MasonM/wiremock-stub-mapping-tracker
     desc: WireMock extensions to track stub mapping usage 
 
+old_project_entries:
   - title: Dark Souls Extract & Pack
     url: https://github.com/MasonM/ds_extract_and_pack
     desc: Tooling to help mod Dark Souls
 
-old_project_entries:
   - title: apeye
     url: https://github.com/MasonM/apeye
     desc: jQuery widget to help document and test APIs
