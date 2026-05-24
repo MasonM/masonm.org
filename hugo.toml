@@ -10,7 +10,7 @@ theme = 'moonwalk-hugo'
 
   [[menus.main]]
     name = 'Email'
-    url = 'mailto:mason@masonm.org'
+    url = 'mailto:mason+homepage@masonm.org'
 
   [[menus.main]]
     name = 'PGP'
