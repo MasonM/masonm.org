@@ -1,0 +1,25 @@
+baseURL = 'https://masonm.org/'
+languageCode = 'en-US'
+title = "Mason's Homepage"
+theme = 'moonwalk-hugo'
+
+[menus]
+  [[menus.main]]
+    name = 'Home'
+    pageRef = '/'
+
+  [[menus.main]]
+    name = 'Email'
+    url = 'mailto:mason@masonm.org'
+
+  [[menus.main]]
+    name = 'PGP'
+    url = 'https://keys.openpgp.org/search?q=A5D5F9D424226C32FF200AC8FC3A49152913674A'
+
+  [[menus.main]]
+    name = 'GitHub'
+    url = 'https://github.com/MasonM'
+
+[params]
+  [params.author]
+    email = 'mason+homepage@masonm.org'

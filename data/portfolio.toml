@@ -1,0 +1,13 @@
+[projects]
+  [projects.1]
+    title = 'Argo Workflows'
+    url = 'https://github.com/argoproj/argo-workflows/'
+    description = 'Kubernetes-based workflow orchestration engine'
+  [projects.2]
+    title = 'wiremock-jwt-extension'
+    url = 'https://github.com/MasonM/wiremock-jwt-extension'
+    description = 'WireMock extension for matching requests with JSON Web Tokens (JWT)'
+  [projects.3]
+    title = 'wiremock-stub-mapping-tracker'
+    url = 'https://github.com/MasonM/wiremock-stub-mapping-tracker'
+    description = 'WireMock extensions to track stub mapping usage'

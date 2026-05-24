@@ -1,0 +1,37 @@
+[projects]
+  [projects.1]
+    title = 'Dark Souls Extract & Pack'
+    url = 'https://github.com/MasonM/ds_extract_and_pack'
+    description = 'Tooling to help mod Dark Souls'
+  [projects.2]
+    title = 'apeye'
+    url = 'https://github.com/MasonM/apeye'
+    description = 'jQuery widget to help document and test APIs'
+  [projects.3]
+    title = 'wiremock-jsextend'
+    url = 'https://github.com/MasonM/wiremock-jsextend'
+    description = 'WireMock meta-extension to manage JS-based extensions'
+  [projects.4]
+    title = 'avsh'
+    url = 'https://github.com/MasonM/avsh'
+    description = 'A faster alternative to vagrant ssh, with extras.'
+  [projects.5]
+    title = 'astojs'
+    url = 'https://github.com/MasonM/astojs'
+    description = 'A transpiler for Applescript to ECMAScript 6.'
+  [projects.6]
+    title = 'django-conference'
+    url = 'https://github.com/MasonM/django-conference'
+    description = 'A conference management suite.'
+  [projects.7]
+    title = 'django-elect'
+    url = 'https://github.com/MasonM/django-elect'
+    description = 'A voting app for small-scale elections.'
+  [projects.8]
+    title = 'VMPR'
+    url = 'https://github.com/MasonM/VMPR'
+    description = 'A script to help Virgin Mobile customers mitigate security issues.'
+  [projects.9]
+    title = 'postgres_select_tracker'
+    url = 'https://github.com/MasonM/postgres_select_tracker'
+    description = 'PL/pgSQL functions to record selected rows to a separate table'
