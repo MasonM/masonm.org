@@ -23,3 +23,12 @@ theme = 'moonwalk-hugo'
 [params]
   [params.author]
     email = 'mason+homepage@masonm.org'
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.extensions]
+      [markup.goldmark.extensions.passthrough]
+        enable = true
+        [markup.goldmark.extensions.passthrough.delimiters]
+          block = [['\[', '\]'], ['$$', '$$']]
+          inline = [['\(', '\)']]
