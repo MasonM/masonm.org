@@ -10,7 +10,7 @@ theme = 'moonwalk-hugo'
 
   [[menus.main]]
     name = 'Email'
-    url = 'mailto:mason+homepage@masonm.org'
+    url = 'mailto:mason+home@masonm.org'
 
   [[menus.main]]
     name = 'PGP'
@@ -22,7 +22,7 @@ theme = 'moonwalk-hugo'
 
 [params]
   [params.author]
-    email = 'mason+homepage@masonm.org'
+    email = 'mason+home@masonm.org'
 
 [markup]
   [markup.goldmark]
@@ -31,4 +31,4 @@ theme = 'moonwalk-hugo'
         enable = true
         [markup.goldmark.extensions.passthrough.delimiters]
           block = [['\[', '\]'], ['$$', '$$']]
-          inline = [['\(', '\)']]
+          inline = [['\(', '\)'], ['$', '$']]
