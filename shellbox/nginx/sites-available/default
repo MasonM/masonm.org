@@ -1,0 +1,68 @@
+server {
+  listen 80 default_server;
+  http2 on;
+
+  root /var/www/masonm.org;
+  index index.html index.htm index.php;
+
+  server_name www.masonm.org masonm.org;
+
+  location / {
+    # First attempt to serve request as file, then
+    # as directory, then fall back to index.html
+    try_files $uri $uri/ /index.html;
+  }
+
+  location ~* ^/elect.* {
+    rewrite ^ https://github.com/MasonM/django-elect permanent;
+  }
+
+  location ~* ^/conf.* {
+    rewrite ^  https://github.com/MasonM/django-conference permanent;
+  }
+
+  location ~* ^/resume$ {
+    rewrite ^ http://masonm.org/resume.pdf;
+  }
+
+  location ~* ^/linked.*in.* {
+    rewrite ^ http://www.linkedin.com/pub/mason-malone/13/a9a/350 permanent;
+  }
+
+  location ~* ^/argo$ {
+    rewrite ^ https://prod.liveshare.vsengsaas.visualstudio.com/join?3537A6A3F624188D4152E20B2310BED0081F;
+  }
+
+  location /uncle_bob_travels {
+    autoindex on;
+  }
+
+  location /olivia {
+    autoindex on;
+  }
+
+  location /exercises {
+    autoindex on;
+  }
+
+  location ~ \.php$ {
+    fastcgi_pass unix:/var/run/php/php-fpm.sock;
+    include snippets/fastcgi-php.conf;
+  }
+
+  # Doku wiki
+  location /wiki {
+    try_files $uri $uri/ @dokuwiki;
+    location ~ /wiki/(conf/|bin/|inc/|install.php) { deny all; }
+    #Support for X-Accel-Redirect
+    location ~ /wiki/data/ { internal ; }
+  }
+
+  location @dokuwiki {
+    # rewrites "doku.php/" out of the URLs if you set the userwrite setting to .htaccess in dokuwiki config page
+    rewrite ^/wiki/_media/(.*) /wiki/lib/exe/fetch.php?media=$1 last;
+    rewrite ^/wiki/_detail/(.*) /wiki/lib/exe/detail.php?media=$1 last;
+    rewrite ^/wiki/_export/([^/]+)/(.*) /wiki/doku.php?do=export_$1&id=$2 last;
+    rewrite ^/wiki/(.*) /wiki/doku.php?id=$1&$args last;
+  }
+}
