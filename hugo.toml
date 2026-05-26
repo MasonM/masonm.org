@@ -2,6 +2,8 @@ baseURL = 'https://masonm.org/'
 languageCode = 'en-US'
 title = "Mason's Homepage"
 theme = 'moonwalk-hugo'
+disableHugoGeneratorInject = true
+disableKinds = ['rss', 'taxonomy', 'sitemap']
 
 [menus]
   [[menus.main]]
