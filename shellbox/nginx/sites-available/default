@@ -1,6 +1,8 @@
 server {
   listen 80 default_server;
   http2 on;
+  gzip on;
+  gzip_proxied any;
 
   root /var/www/masonm.org;
   index index.html index.htm index.php;
