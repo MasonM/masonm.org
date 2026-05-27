@@ -4,6 +4,7 @@ title = "Mason's Homepage"
 theme = 'moonwalk-hugo'
 disableHugoGeneratorInject = true
 disableKinds = ['rss', 'taxonomy', 'sitemap']
+publishDir = 'shellbox/www/masonm.org'
 
 [menus]
   [[menus.main]]
