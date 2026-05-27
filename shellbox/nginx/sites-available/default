@@ -9,12 +9,6 @@ server {
 
   server_name www.masonm.org masonm.org;
 
-  location / {
-    # First attempt to serve request as file, then
-    # as directory, then fall back to index.html
-    try_files $uri $uri/ /index.html;
-  }
-
   location ~* ^/resume$ {
     rewrite ^ http://masonm.org/resume.pdf;
   }

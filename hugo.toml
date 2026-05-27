@@ -35,3 +35,6 @@ publishDir = 'shellbox/www/masonm.org'
         [markup.goldmark.extensions.passthrough.delimiters]
           block = [['\[', '\]'], ['$$', '$$']]
           inline = [['\(', '\)'], ['$', '$']]
+
+[minify]
+  minifyOutput = true
