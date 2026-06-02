@@ -1,17 +1,28 @@
 ---
-title: "Mersenne's Clavichord"
+title: "Modeling Mersenne's Clavichord"
 date: 2026-05-25
 author: Mason Malone
 ---
 
-If you're a programmer like me, you've probably heard of "Mersenne primes": prime numbers of the form \(M_n = 2^n -1\). Mersenne primes are named afer Marin Meresenne, a 17th-century French polymath that was active in many areas, and is most well-known for his contributions to mathematics and music[^1]. Mersenne sought to establish a science of music, and his work form the root of modern acoustics[^2]. 
+For me, one of the most surprising developments in LLMs has been
 
+# What the hell is a clavichord?
+
+## Clavichord Action
+
+A clavichord action is a simple [class 1 lever](https://en.wikipedia.org/wiki/Lever#Types_of_levers), where one end of each key has a piece of metal called a "tangent". When the other end of the key is pressed, the tangent rises and strikes the string. The distance between where the tangent strikes the string and the bridge is called the "sounding length" for that string.
+
+{{< 3d-model src="models/clavichord_action_diagram_compressed.glb" camera-orbit="6.306deg 76.15deg 776.7m" >}}
+
+# Who is Mersenne?
+
+If you're a programmer like me, you've probably heard of "Mersenne primes": prime numbers of the form \(M_n = 2^n -1\). Mersenne primes are named afer Marin Meresenne, a 17th-century French polymath that was active in many areas, and is most well-known for his contributions to mathematics and music[^1]. Mersenne sought to establish a science of music, and his work form the root of modern acoustics[^2]. 
 
 # How Does this Work?
 
 ## Clavichord Actions and Mersenne's Laws
 
-A clavichord action is a simple [class 1 lever](https://en.wikipedia.org/wiki/Lever#Types_of_levers), where one end of each key has a piece of metal called a "tangent". When the other end of the key is pressed, the tangent rises and strikes the string. The distance between where the tangent strikes the string and the bridge is called the "sounding length" for that string. The sounding length, along with the tension and mass per unit length of the string, determines the [fundamental frequency](https://en.wikipedia.org/wiki/Fundamental_frequency) of the key being played. Mersenne was the first to discover and prove the mathematical relationship between these variables, which is now known as [Mersenne's laws](https://en.wikipedia.org/wiki/Mersenne%27s_laws). The usual form of this relationship is given as:
+ The sounding length, along with the tension and mass per unit length of the string, determines the [fundamental frequency](https://en.wikipedia.org/wiki/Fundamental_frequency) of the key being played. Mersenne was the first to discover and prove the mathematical relationship between these variables, which is now known as [Mersenne's laws](https://en.wikipedia.org/wiki/Mersenne%27s_laws). The usual form of this relationship is given as:
 $$
 f_0=\frac{1}{2L}\sqrt{\frac{F}{\mu}}
 $$
@@ -77,6 +88,26 @@ Tangent_x(x+1) &= Bridge_x(x+1) - L(x+1) \\
 $$
 
 This is the final equation implemented by the `tangentXForKeyFn()` function in [string_utils.kcl](./string_utils.kcl).
+
+```rust
+export fn tangentXForKeyFn(@keyIdx) {
+  return if keyIdx == 0 {
+    // Low C has fixed position relative to the toolbox
+    toolboxLength + 10mm
+  } else if courseIdxForKey(keyIdx) == courseIdxForKey(keyIdx - 1) {
+    // Fretted key. Calculate the sounding length using Mersenne's laws.
+    bridgeXForKey(keyIdx) - (
+      frequencyForKey(keyIdx - 1) * (
+        (bridgeXForKey(keyIdx - 1) - tangentXForKeyFn(keyIdx - 1))
+        / frequencyForKey(keyIdx)
+      )
+    )
+  } else {
+    // Unfretted key. Just use fixed spacing from the previous tangent.
+    tangentXForKeyFn(keyIdx - 1) + tangentSpacing()
+  }
+}
+```
 
 [^1]: A. Malet and D. Cozzoli, “Mersenne and Mixed Mathematics,” Perspectives on Science, vol. 18, no. 1, pp. 3, May 2010, doi: 10.1162/posc.2010.18.1.1.
 [^2]: Bohn, Dennis A. (1988). "Environmental Effects on the Speed of Sound". Journal of the Audio Engineering Society. 36 (4): 223–231
