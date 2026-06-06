@@ -1,0 +1,15 @@
+server {
+  listen 80;
+  server_name privatebin.masonm.org;
+  root /var/www/privatebin;
+  index index.php;
+
+  location / {
+    try_files $uri $uri/ index.php$args;
+  }
+
+  location ~ \.php$ {
+    fastcgi_pass unix:/var/run/php/php-fpm.sock;
+    include snippets/fastcgi-php.conf;
+  }
+}
