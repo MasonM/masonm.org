@@ -6,10 +6,7 @@ server {
   server_name www.apeye.org apeye.org;
   disable_symlinks off;
 
-  location / {
-    try_files $uri $uri/ /index.html;
-    expires 12h;
-  }
+  return 301 https://github.com/MasonM/apeye;
 }
 
 server {
@@ -17,15 +14,5 @@ server {
   http2 on;
   root /var/www/apeye.org/examples/api.apeye.org;
   server_name api.apeye.org;
-
-  location / {
-    try_files $uri @apeye;
-  }
-
-  location @apeye {
-    include fastcgi_params;
-    fastcgi_param PATH_INFO $fastcgi_script_name;
-    fastcgi_param SCRIPT_NAME '';
-    fastcgi_pass unix:/tmp/apeye-fcgi.sock;
-  }
+  return 301 https://github.com/MasonM/apeye;
 }
