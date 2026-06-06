@@ -10,11 +10,11 @@ server {
   server_name www.masonm.org masonm.org;
 
   location ~* ^/resume$ {
-    rewrite ^ http://masonm.org/resume.pdf;
+    rewrite ^ https://masonm.org/resume.pdf;
   }
 
   location ~* ^/linked.*in.* {
-    rewrite ^ http://www.linkedin.com/pub/mason-malone/13/a9a/350 permanent;
+    rewrite ^ https://www.linkedin.com/pub/mason-malone/13/a9a/350 permanent;
   }
 
   # Doku wiki
