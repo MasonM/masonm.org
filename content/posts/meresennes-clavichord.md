@@ -4,9 +4,13 @@ date: 2026-05-25
 author: Mason Malone
 ---
 
-For me, one of the most surprising developments in LLMs has been
+For me, one of the most surprising developments in LLMs has been 
 
 # What the hell is a clavichord?
+
+The clavichord is a keyboard instrument that was invented at some point before 1404[^1], and flourished for centuries in Europe until it was replaced by the fortepiano[^2].
+
+My first exposure to the clavichord was last year, when I randomly stumbled on the album [Clavichord Recital by Gustav Leonhardt](https://open.spotify.com/album/7cr4GFB8PtGqEa4KtfUtzO?si=00c4d272c07a4331). I immediately fell in love, and 
 
 ## Clavichord Action
 
@@ -46,28 +50,28 @@ With an unfretted clavichord, you can change the temperament by adjusting the te
 
 ## Solving for the Sounding Length
 
-How does this model know where to position the key levers and tangents? First, let's revisit Mersenne's laws. We know that for fretted keys, we must keep the tension and density of the string constant for every key sharing that string, so let's solve for that. Let $f_0(x)$ be the fundamental frequency for the key at index $x$:
+How does this model know where to position the key levers and tangents? First, let's revisit Mersenne's laws. We know that for fretted keys, we must keep the tension and density of the string constant for every key sharing that string, so let's solve for that. Let $f_0(i)$ be the fundamental frequency for the key at index $i$:
 $$
 \begin{aligned}
-f_0(x)=\frac{1}{L(x)d}\sqrt{\frac{T(x)}{\pi\rho(x)}} \\
-\sqrt{\frac{T(x)}{\pi\rho(x)}}=f_0(x)L(x)d
+f_0(i)=\frac{1}{L(i)d}\sqrt{\frac{T(i)}{\pi\rho(i)}} \\
+\sqrt{\frac{T(i)}{\pi\rho(i)}}=f_0(i)L(i)d
 \end{aligned}
 $$
 
-Now, let's calculate the frequency for an adjacent fretted key at index $x+1$:
+Now, let's calculate the frequency for an adjacent fretted key at index $i+1$:
 $$
 \begin{aligned}
-f_0(x+1) &=\frac{1}{L(x+1)d}\sqrt{\frac{T(x)}{\pi\rho(x)}}\\
-       &=\frac{1}{L(x+1)d}f_0(x)L(x)d\\
-       &=\frac{f_0(x)L(x)d}{L(x+1)d}\\
-       &=\frac{f_0(x)L(x)}{L(x+1)}
+f_0(i+1) &=\frac{1}{L(i+1)d}\sqrt{\frac{T(i)}{\pi\rho(i)}}\\
+       &=\frac{1}{L(i+1)d}f_0(i)L(i)d\\
+       &=\frac{f_0(i)L(i)d}{L(i+1)d}\\
+       &=\frac{f_0(i)L(i)}{L(i+1)}
 \end{aligned}
 $$
 
-We can now easily solve for the sounding length of the key at index $x+1$:
+We can now easily solve for the sounding length of the key at index $i+1$:
 $$
 \begin{aligned}
-L(x+1) &=\frac{f_0(x)L(x)}{f_0(x+1)}
+L(i+1) &=\frac{f_0(i)L(i)}{f_0(i+1)}
 \end{aligned}
 $$
 
@@ -75,15 +79,15 @@ $$
 
 Once we have the sounding length, we need to use that to determine the position of the tangents. The $x$ coordinate of the tangent is related to the sounding length and the $x$ coordinate of the bridge:
 $$
-Tangent_x(x) = Bridge_x(x) - L(x)
+T_x(i) = B_x(i) - L(i)
 $$
 
-Substituting the equation for $L(x+1)$ above, we end up with:
+Substituting the equation for $L(i+1)$ above, we end up with:
 $$
 \begin{aligned}
-Tangent_x(x+1) &= Bridge_x(x+1) - L(x+1) \\
-            &= Bridge_x(x+1) - \frac{f_0(x)L(x)}{f_0(x+1)} \\
-            &= Bridge_x(x+1) - \frac{f_0(x)(Bridge_x(x) - Tangent_x(x))}{f_0(x+1)} \\
+T_x(i+1) &= B_x(i+1) - L(i+1) \\
+            &= B_x(i+1) - \frac{f_0(i)L(i)}{f_0(i+1)} \\
+            &= B_x(i+1) - \frac{f_0(i)(B_x(i) - T_x(i))}{f_0(i+1)} \\
 \end{aligned}
 $$
 
@@ -109,7 +113,9 @@ export fn tangentXForKeyFn(@keyIdx) {
 }
 ```
 
-[^1]: A. Malet and D. Cozzoli, “Mersenne and Mixed Mathematics,” Perspectives on Science, vol. 18, no. 1, pp. 3, May 2010, doi: 10.1162/posc.2010.18.1.1.
-[^2]: Bohn, Dennis A. (1988). "Environmental Effects on the Speed of Sound". Journal of the Audio Engineering Society. 36 (4): 223–231
-[^3]: Rasch, Rudolf. (2006). Tuning and temperament. The Cambridge History of Western Music Theory. Unknown page.
-[^4]: Barbour, J. M. (2004). "Tuning and Temperament: A Historical Survey." United States: Dover Publications. Page 98
+[^1]: The [Wikipedia article used to claim](https://en.wikipedia.org/w/index.php?title=Clavichord&oldid=1343076520#History_and_use) it was invented in the early 14th century, but this isn't supported by the sources it cites, so I changed it. Both works it cites (Bernard Brauchli's "The Clavichord" and Susi Jeans's "The pedal clavichord and other practice instruments of organists") state that the first unambiguous evidence was in the early 15th century, though this is complicated by the fact literary sources of that time use the terms "clavichord" and "monochord" interchangeably. There are 14th-century sources that use the term "monochord" that could plausibly be referring to a clavichord, but this is speculation.
+[^2]: Brauchli, Bernard (1998). "The Clavichord", pp. 1
+[^3]: A. Malet and D. Cozzoli, “Mersenne and Mixed Mathematics,” Perspectives on Science, vol. 18, no. 1, pp. 3, May 2010, doi: 10.1162/posc.2010.18.1.1.
+[^4]: Bohn, Dennis A. (1988). "Environmental Effects on the Speed of Sound". Journal of the Audio Engineering Society. 36 (4): 223–231
+[^5]: Rasch, Rudolf. (2006). Tuning and temperament. The Cambridge History of Western Music Theory. Unknown page.
+[^6]: Barbour, J. M. (2004). "Tuning and Temperament: A Historical Survey." United States: Dover Publications. Page 98
