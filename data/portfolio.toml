@@ -1,13 +1,20 @@
-[projects]
-  [projects.1]
-    title = 'Argo Workflows'
-    url = 'https://github.com/argoproj/argo-workflows/'
-    description = 'Kubernetes-based workflow orchestration engine'
-  [projects.2]
-    title = 'wiremock-jwt-extension'
-    url = 'https://github.com/MasonM/wiremock-jwt-extension'
-    description = 'WireMock extension for matching requests with JSON Web Tokens (JWT)'
-  [projects.3]
-    title = 'wiremock-stub-mapping-tracker'
-    url = 'https://github.com/MasonM/wiremock-stub-mapping-tracker'
-    description = 'WireMock extensions to track stub mapping usage'
+[[projects]]
+  title = 'Argo Workflows'
+  url = 'https://github.com/argoproj/argo-workflows/'
+  description = 'Kubernetes-based workflow orchestration engine'
+[[projects]]
+  title = "Mersenne's Clavichord"
+  url = 'https://github.com/MasonM/mersennes_clavichord'
+  description = 'Zoo CAD model of the clavichord described by Mersenne in "Harmonie universelle"'
+[[projects]]
+  title = "Urbino Clavichord"
+  url = 'https://github.com/MasonM/urbino_clavichord/'
+  description = 'OpenSCAD model of the clavichord depicted in the 1479 intarsia at Urbino.'
+[[projects]]
+  title = 'wiremock-jwt-extension'
+  url = 'https://github.com/MasonM/wiremock-jwt-extension'
+  description = 'WireMock extension for matching requests with JSON Web Tokens (JWT)'
+[[projects]]
+  title = 'wiremock-stub-mapping-tracker'
+  url = 'https://github.com/MasonM/wiremock-stub-mapping-tracker'
+  description = 'WireMock extensions to track stub mapping usage'

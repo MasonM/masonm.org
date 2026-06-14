@@ -4,13 +4,17 @@ date: 2026-05-25
 author: Mason Malone
 ---
 
-For me, one of the most surprising developments in LLMs has been 
+As a layman in machine learning, one of the most surprising developments recently has been 
+One of the most surprising developments in LLMs has been advancements in spatial reasoning. Last year, I experimented with using LLMs have historically been nearly unusable for 3D modeling, and I had assumed 
 
 # What the hell is a clavichord?
 
-The clavichord is a keyboard instrument that was invented at some point before 1404[^1], and flourished for centuries in Europe until it was replaced by the fortepiano[^2].
+The clavichord is a keyboard instrument that was invented at some point before 1404, and flourished for centuries in Europe[^1].
+It a was a highly expressive instrument, but was too quiet for concert use, and gradually faded away with the rise of the piano[^2].
+Despite its weak sound, it was the preferred instrument for many composers, notably CPE Bach, who considered it superior to the piano[^3]. If this 
 
-My first exposure to the clavichord was last year, when I randomly stumbled on the album [Clavichord Recital by Gustav Leonhardt](https://open.spotify.com/album/7cr4GFB8PtGqEa4KtfUtzO?si=00c4d272c07a4331). I immediately fell in love, and 
+If this is your first time hearing a
+Even though I've been listening to classical music for over 20 years, my first exposure to the clavichord was when I randomly stumbled on the album [Clavichord Recital by Gustav Leonhardt](https://open.spotify.com/album/7cr4GFB8PtGqEa4KtfUtzO?si=00c4d272c07a4331). I was vaguely aware of clavichords at that point -- I 
 
 ## Clavichord Action
 
@@ -113,8 +117,10 @@ export fn tangentXForKeyFn(@keyIdx) {
 }
 ```
 
-[^1]: The [Wikipedia article used to claim](https://en.wikipedia.org/w/index.php?title=Clavichord&oldid=1343076520#History_and_use) it was invented in the early 14th century, but this isn't supported by the sources it cites, so I changed it. Both works it cites (Bernard Brauchli's "The Clavichord" and Susi Jeans's "The pedal clavichord and other practice instruments of organists") state that the first unambiguous evidence was in the early 15th century, though this is complicated by the fact literary sources of that time use the terms "clavichord" and "monochord" interchangeably. There are 14th-century sources that use the term "monochord" that could plausibly be referring to a clavichord, but this is speculation.
+[^1]: Until I edited it, the [Wikipedia article on the clavichord](https://en.wikipedia.org/wiki/Clavichord) claimed it was invented in the early 14th century. I read both sources it cited, and neither substantiates that claim. Both state that the first unambiguous evidence was in the early 15th century. Literary sources of that time used the terms "clavichord" and "monochord" interchangeably, making exact dating difficult.
 [^2]: Brauchli, Bernard (1998). "The Clavichord", pp. 1
+[^3]: Ibid., 216-217
+
 [^3]: A. Malet and D. Cozzoli, “Mersenne and Mixed Mathematics,” Perspectives on Science, vol. 18, no. 1, pp. 3, May 2010, doi: 10.1162/posc.2010.18.1.1.
 [^4]: Bohn, Dennis A. (1988). "Environmental Effects on the Speed of Sound". Journal of the Audio Engineering Society. 36 (4): 223–231
 [^5]: Rasch, Rudolf. (2006). Tuning and temperament. The Cambridge History of Western Music Theory. Unknown page.
