@@ -1,16 +1,16 @@
 ---
 title: "Modeling Mersenne's Clavichord"
-date: 2026-05-25
+date: 2026-06-14
 author: Mason Malone
 ---
 
-As a layman in machine learning, one of the most surprising recent developments has been the rise of Vision Language Models (VLMs) for CAD work.
+As a layman in machine learning, one of the most surprising developments recently has been the rise of Vision Language Models (VLMs) for CAD work.
 I had assumed that the [symbol grounding problem](https://en.wikipedia.org/wiki/Symbol_grounding_problem) would be an insurmountable barrier for anything require precision modeling, yet there have been several CAD projects for doing exactly that.
 
-One is [Zoo](https://zoo.dev/), a CAD program that integrates with an VLM to create 3D models using [KCL](https://zoo.dev/docs/kcl-book/intro.html), their domain-specific language.
-Zoo hosted a design contest recently, so I decided to enter to see what it's capable of.
+One is [Zoo](https://zoo.dev/), a CAD program that integrates with a VLM to create 3D models using [KCL](https://zoo.dev/docs/kcl-book/intro.html), their domain-specific language.
+The company behind Zoo hosted a design contest recently, so I decided to enter to see what it's capable of.
 My submission, [Mersenne's Clavichord](https://zoo.dev/aquarium/8a3d0547-5ac6-41f7-82f4-90084e617db2) won first place. 
-This post will walk through how I approached this model, but first, some historical background:
+This post will walk through how I approached this model. But first, some historical background:
 
 ## What the hell is a clavichord?
 
@@ -25,35 +25,47 @@ I had heard Bach played on the piano countless times, yet never the clavichord, 
 At first, I thought the answer was that the piano was simply a superior instrument, so there was no reason to perform Bach on the clavichord anymore.
 But then in Leonhardt's performance of the Sonata in B Minor, I heard what sounded like vibrato.
 "Surely that's a recording error", I thought, "everyone knows you can't do vibrato on a keyboard instrument." 
-But I was wrong: unlike virtually every other keyboard instrument, you can perform vibrato on a clavichord, and it's a consequence of how the action works.
+But I was wrong: unlike virtually every other keyboard instrument, you absolutely can perform vibrato on a clavichord, and it's a consequence of how the action works.
 
 ### Clavichord action
 
-A clavichord action is a simple [class 1 lever](https://en.wikipedia.org/wiki/Lever#Types_of_levers), where one end of each key has a piece of metal called a "tangent". When the other end of the key is pressed, the tangent rises and strikes the string. The distance between where the tangent strikes the string and the bridge is called the "sounding length" for that string.
+A clavichord action is a simple [class 1 lever](https://en.wikipedia.org/wiki/Lever#Types_of_levers), where one end of each key has a piece of metal called a "tangent".
+When the other end of the key is pressed, the tangent rises and strikes the string. The distance between where the tangent strikes the string and the bridge is called the "sounding length" for that string.
 
 {{< 3d-model
        src="models/clavichord_action_diagram_compressed.glb"
-       camera-orbit="12deg 86.15deg 376.7m" >}}
+       camera-orbit="12deg 86.15deg 376.7m"
+       caption="Clavichord action ([source](https://github.com/MasonM/urbino_clavichord/blob/main/clavichord_action_diagram.scad))"
+>}}
 
 By rocking the key slightly, the player can alter the tension of the string for the duration of the note, which changes the pitch.
 This is a form of vibrato unique to the clavichord, and is sometimes called "bebung"[^4].
 
 ### Why model a clavichord?
 
+Even though there are still instrument makers keeping the art of clavichord building alive, many aspects of their construction have been lost to time. 
+Several modern clavichord builders, such as [Peter Bavington](https://www.peter-bavington.co.uk/) and [Pierre Verbeek](https://harpsichords.weebly.com/), have done extensive work to rediscover these lost techniques.
+Verbeek is an engineer and physicist who turned to clavichord construction in 2004, and in 2011, he published a fascinating paper titled ["The Urbino Clavichord Revisted"](https://harpsichords.weebly.com/uploads/2/5/0/1/25019733/verbeek_urbino_magnano_nov_2011_ver09_pub.pdf), in which he reverse-engineered how a 15th-century clavichord was built by analyzing an intarsia depicting it.
+Solving puzzles
+
+Unlike every other paper I've read, Verbeek's paper included a plethora of measurements and technical drawings.
+It's very difficult to accurately describe something as complex as a clavichord using only prose and technical drawings, 
+
+
 ### Who is Mersenne?
 
-The clavichord I decided to model was based on a description by the French polymath [Marin Mersenne](https://en.wikipedia.org/wiki/Marin_Mersenne) in his 1636 treatise [Harmonie universelle](https://en.wikipedia.org/wiki/Harmonie_universelle).
+The clavichord I decided to model was described by the French polymath [Marin Mersenne](https://en.wikipedia.org/wiki/Marin_Mersenne) in his 1636 treatise [Harmonie universelle](https://en.wikipedia.org/wiki/Harmonie_universelle).
 
-If you're a programmer like me, you've probably heard of "Mersenne primes": prime numbers of the form \(M_n = 2^n -1\). Mersenne primes are named afer Marin Meresenne, a 17th-century French polymath that was active in many areas, and is most well-known for his contributions to mathematics and music[^1]. Mersenne sought to establish a science of music, and his work form the root of modern acoustics[^2]. 
+If you're a programmer like me, you've probably heard of "Mersenne primes": prime numbers of the form \(M_n = 2^n -1\). Mersenne primes were one of Meresenne's many contribution a 17th-century French polymath that was active in many areas, and is most well-known for his contributions to mathematics and music[^4]. Mersenne sought to establish a science of music, and his work form the root of modern acoustics[^5]. 
 
 ## Modeling the clavichord
 
-### First Attempts
+### First Attempt
 ### Case
 ### Keyboard
 ### Bridges
 
-## Clavichord Actions and Mersenne's Laws
+## Mersenne's Laws
 
  The sounding length, along with the tension and mass per unit length of the string, determines the [fundamental frequency](https://en.wikipedia.org/wiki/Fundamental_frequency) of the key being played. Mersenne was the first to discover and prove the mathematical relationship between these variables, which is now known as [Mersenne's laws](https://en.wikipedia.org/wiki/Mersenne%27s_laws). The usual form of this relationship is given as:
 $$
@@ -146,8 +158,7 @@ export fn tangentXForKeyFn(@keyIdx) {
 [^2]: Brauchli, Bernard (1998). "The Clavichord", pp. 1
 [^3]: Ibid., 216-217
 [^4]: Ibid., 267
-
-[^3]: A. Malet and D. Cozzoli, “Mersenne and Mixed Mathematics,” Perspectives on Science, vol. 18, no. 1, pp. 3, May 2010, doi: 10.1162/posc.2010.18.1.1.
-[^4]: Bohn, Dennis A. (1988). "Environmental Effects on the Speed of Sound". Journal of the Audio Engineering Society. 36 (4): 223–231
-[^5]: Rasch, Rudolf. (2006). Tuning and temperament. The Cambridge History of Western Music Theory. Unknown page.
-[^6]: Barbour, J. M. (2004). "Tuning and Temperament: A Historical Survey." United States: Dover Publications. Page 98
+[^5]: A. Malet and D. Cozzoli, “Mersenne and Mixed Mathematics,” Perspectives on Science, vol. 18, no. 1, pp. 3, May 2010, doi: 10.1162/posc.2010.18.1.1.
+[^6]: Bohn, Dennis A. (1988). "Environmental Effects on the Speed of Sound". Journal of the Audio Engineering Society. 36 (4): 223–231
+[^7]: Rasch, Rudolf. (2006). Tuning and temperament. The Cambridge History of Western Music Theory. 
+[^8]: Barbour, J. M. (2004). "Tuning and Temperament: A Historical Survey." United States: Dover Publications. Page 98
