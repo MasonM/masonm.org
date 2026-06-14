@@ -4,29 +4,54 @@ date: 2026-05-25
 author: Mason Malone
 ---
 
-As a layman in machine learning, one of the most surprising developments recently has been 
-One of the most surprising developments in LLMs has been advancements in spatial reasoning. Last year, I experimented with using LLMs have historically been nearly unusable for 3D modeling, and I had assumed 
+As a layman in machine learning, one of the most surprising recent developments has been the rise of Vision Language Models (VLMs) for CAD work.
+I had assumed that the [symbol grounding problem](https://en.wikipedia.org/wiki/Symbol_grounding_problem) would be an insurmountable barrier for anything require precision modeling, yet there have been several CAD projects for doing exactly that.
 
-# What the hell is a clavichord?
+One is [Zoo](https://zoo.dev/), a CAD program that integrates with an VLM to create 3D models using [KCL](https://zoo.dev/docs/kcl-book/intro.html), their domain-specific language.
+Zoo hosted a design contest recently, so I decided to enter to see what it's capable of.
+My submission, [Mersenne's Clavichord](https://zoo.dev/aquarium/8a3d0547-5ac6-41f7-82f4-90084e617db2) won first place. 
+This post will walk through how I approached this model, but first, some historical background:
+
+## What the hell is a clavichord?
 
 The clavichord is a keyboard instrument that was invented at some point before 1404, and flourished for centuries in Europe[^1].
-It a was a highly expressive instrument, but was too quiet for concert use, and gradually faded away with the rise of the piano[^2].
-Despite its weak sound, it was the preferred instrument for many composers, notably CPE Bach, who considered it superior to the piano[^3]. If this 
+It a was a highly expressive instrument, but too quiet for concert use, and gradually faded away with the rise of the piano[^2].
+Despite its weak sound, it was the preferred instrument for many composers, notably C.P.E. Bach, who considered it superior to the piano[^3]. 
 
-If this is your first time hearing a
-Even though I've been listening to classical music for over 20 years, my first exposure to the clavichord was when I randomly stumbled on the album [Clavichord Recital by Gustav Leonhardt](https://open.spotify.com/album/7cr4GFB8PtGqEa4KtfUtzO?si=00c4d272c07a4331). I was vaguely aware of clavichords at that point -- I 
+I've been listening to classical music for over 20 years, but I was only vaguely aware of the clavichord until last year, when I randomly stumbled on the album [Clavichord Recital by Gustav Leonhardt](https://open.spotify.com/album/7cr4GFB8PtGqEa4KtfUtzO?si=00c4d272c07a4331).
+I immediately fell in love with that album, but I began to wonder: why is this my first time hearing a clavichord?
+I had heard Bach played on the piano countless times, yet never the clavichord, despite being the instrument on which he likely wrote most of this works. 
 
-## Clavichord Action
+At first, I thought the answer was that the piano was simply a superior instrument, so there was no reason to perform Bach on the clavichord anymore.
+But then in Leonhardt's performance of the Sonata in B Minor, I heard what sounded like vibrato.
+"Surely that's a recording error", I thought, "everyone knows you can't do vibrato on a keyboard instrument." 
+But I was wrong: unlike virtually every other keyboard instrument, you can perform vibrato on a clavichord, and it's a consequence of how the action works.
+
+### Clavichord action
 
 A clavichord action is a simple [class 1 lever](https://en.wikipedia.org/wiki/Lever#Types_of_levers), where one end of each key has a piece of metal called a "tangent". When the other end of the key is pressed, the tangent rises and strikes the string. The distance between where the tangent strikes the string and the bridge is called the "sounding length" for that string.
 
-{{< 3d-model src="models/clavichord_action_diagram_compressed.glb" camera-orbit="6.306deg 76.15deg 776.7m" >}}
+{{< 3d-model
+       src="models/clavichord_action_diagram_compressed.glb"
+       camera-orbit="12deg 86.15deg 376.7m" >}}
 
-# Who is Mersenne?
+By rocking the key slightly, the player can alter the tension of the string for the duration of the note, which changes the pitch.
+This is a form of vibrato unique to the clavichord, and is sometimes called "bebung"[^4].
+
+### Why model a clavichord?
+
+### Who is Mersenne?
+
+The clavichord I decided to model was based on a description by the French polymath [Marin Mersenne](https://en.wikipedia.org/wiki/Marin_Mersenne) in his 1636 treatise [Harmonie universelle](https://en.wikipedia.org/wiki/Harmonie_universelle).
 
 If you're a programmer like me, you've probably heard of "Mersenne primes": prime numbers of the form \(M_n = 2^n -1\). Mersenne primes are named afer Marin Meresenne, a 17th-century French polymath that was active in many areas, and is most well-known for his contributions to mathematics and music[^1]. Mersenne sought to establish a science of music, and his work form the root of modern acoustics[^2]. 
 
-# How Does this Work?
+## Modeling the clavichord
+
+### First Attempts
+### Case
+### Keyboard
+### Bridges
 
 ## Clavichord Actions and Mersenne's Laws
 
@@ -117,9 +142,10 @@ export fn tangentXForKeyFn(@keyIdx) {
 }
 ```
 
-[^1]: Until I edited it, the [Wikipedia article on the clavichord](https://en.wikipedia.org/wiki/Clavichord) claimed it was invented in the early 14th century. I read both sources it cited, and neither substantiates that claim. Both state that the first unambiguous evidence was in the early 15th century. Literary sources of that time used the terms "clavichord" and "monochord" interchangeably, making exact dating difficult.
+[^1]: Until I edited it, the [Wikipedia article on the clavichord](https://en.wikipedia.org/wiki/Clavichord) claimed it was invented in the early 14th century. I read both sources it cited, and neither substantiates that claim. Both state that the first unambiguous evidence was in the early 15th century. It's probable it was invented earlier, but exact dating is difficult because literary sources of that time used the terms "clavichord" and "monochord" interchangeably.
 [^2]: Brauchli, Bernard (1998). "The Clavichord", pp. 1
 [^3]: Ibid., 216-217
+[^4]: Ibid., 267
 
 [^3]: A. Malet and D. Cozzoli, “Mersenne and Mixed Mathematics,” Perspectives on Science, vol. 18, no. 1, pp. 3, May 2010, doi: 10.1162/posc.2010.18.1.1.
 [^4]: Bohn, Dennis A. (1988). "Environmental Effects on the Speed of Sound". Journal of the Audio Engineering Society. 36 (4): 223–231
