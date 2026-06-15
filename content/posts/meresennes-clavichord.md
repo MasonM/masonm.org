@@ -37,6 +37,7 @@ When the other end of the key is pressed, the tangent rises and strikes the stri
        src="/clavichord/models/clavichord_action_diagram.glb"
        camera-orbit="12deg 86.15deg 376.7m"
        caption="Clavichord action ([source code](https://github.com/MasonM/urbino_clavichord/blob/main/clavichord_action_diagram.scad))"
+       style="height: 400px; background-color: #ffffff"
 >}}
 
 By rocking the key slightly, the player can alter the tension of the string for the duration of the note, which changes the pitch.
@@ -66,9 +67,8 @@ As far as I know, nobody has created CAD models of clavichords before, so I took
        src="/clavichord/models/urbino_clavichord.glb"
        camera-orbit="-20.92deg 44.33deg 1300m"
        caption="The Urbino clavichord ([source code](https://github.com/MasonM/urbino_clavichord/blob/main/clavichord.scad)) ([interactive editor](https://masonm.org/urbino_clavichord.html))"
+       style="height: 400px"
 >}}
-
-
 
 ### Who is Mersenne?
 
@@ -117,13 +117,25 @@ Bavington explained his reconstruction in his excellent 2011 paper [Reconstructi
 ### Case
 
 I decided to break up the model into discrete components and model each separately, starting with the case. Bavington provided exact dimensions on the case in [Paris inches](https://en.wikipedia.org/wiki/Paris_inch), which I converted to millimeters and put into a [params.kcl](https://github.com/MasonM/mersennes_clavichord/blob/main/params.kcl) file.  
+
 Then, I asked Zookeeper to generate the code for the case's five boards. [The result it gave me](https://github.com/MasonM/mersennes_clavichord/commit/ced92cade071bbdae9460aaf3163039ab7eb18ed) was a good start, but needed manual editing. 
 Zookeeper tends to avoid code reuse, so to make edits easier, I created a [`cube()` helper inspired by OpenSCAD](https://github.com/MasonM/mersennes_clavichord/blob/eec793b1ff8edffd8e232627203b08a27487e058/utils.kcl#L7C1-L33C2) and refactored the case to use that for 4 out of the 5 boards. 
 
 {{< 3d-model
        src="/clavichord/models/case.glb"
        caption="Case ([source code](https://github.com/MasonM/mersennes_clavichord/blob/main/case.kcl))"
+       style="height: 400px"
 >}}
+
+### Toolbox and Right Compartment
+
+{{< 3d-model
+       src="/clavichord/models/toolbox_right_compartment.glb"
+       caption="Toolbox ([source](https://github.com/MasonM/mersennes_clavichord/blob/main/toolbox.kcl)) and right compartment ([source](https://github.com/MasonM/mersennes_clavichord/blob/main/right_compartment.kcl))"
+       style="height: 400px"
+>}}
+
+
 
 ### Keyboard
 
