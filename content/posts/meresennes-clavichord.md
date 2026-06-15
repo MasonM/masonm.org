@@ -7,7 +7,7 @@ author: Mason Malone
 As a layman in machine learning, one of the most surprising developments recently has been the rise of Vision Language Models (VLMs) for CAD work.
 I had assumed that the [symbol grounding problem](https://en.wikipedia.org/wiki/Symbol_grounding_problem) would be an insurmountable barrier for anything require precision modeling, yet there have been several CAD projects for doing exactly that.
 
-One is [Zoo](https://zoo.dev/), a CAD program that integrates with a VLM to create 3D models using [KCL](https://zoo.dev/docs/kcl-book/intro.html), their domain-specific language.
+One is [Zoo](https://zoo.dev/), a CAD program that integrates with a VLM to create 3D models using [KCL](https://zoo.dev/docs/kcl-book/intro.html), their DSL (domain-specific language).
 The company behind Zoo hosted a design contest recently, so I decided to enter to see what it's capable of.
 My submission, [Mersenne's Clavichord](https://zoo.dev/aquarium/8a3d0547-5ac6-41f7-82f4-90084e617db2) won first place. 
 This post will walk through how I approached this model. But first:
@@ -61,34 +61,70 @@ These days, engineers have largely migrated from technical drawings to CAD softw
 4. Visualization. Nearly all CAD programs let you quickly render a 3D model. They say a photograph is worth a thousands words, and one can say the same about 3D models and technical drawings.
 
 Although clavichords are clearly not the kind of objects engineers typically work with, all these advantages are just as applicable to the work of people like Verbeek and Bavington.
-As far as I know, nobody has created CAD models of clavichords before, so I took it upon myself to turn Verbeek's paper into a model using [OpenSCAD](https://openscad.org/). The result is shown below:
+As far as I know, nobody has created CAD models of clavichords before, so I took it upon myself to turn Verbeek's paper into a model using [OpenSCAD](https://openscad.org/). After several weekends of work, I ended up with this:
 {{< 3d-model
        src="/clavichord/models/urbino_clavichord.glb"
        camera-orbit="-20.92deg 44.33deg 1300m"
-       caption="The Urbino clavichord ([source code](https://github.com/MasonM/urbino_clavichord/blob/main/clavichord.scad))"
+       caption="The Urbino clavichord ([source code](https://github.com/MasonM/urbino_clavichord/blob/main/clavichord.scad)) ([interactive editor](https://masonm.org/urbino_clavichord.html))"
 >}}
 
 
-I haven't built this (or any) clavichord before, so it's likely I made mistakes. If you notice any, please [contact me](mailto:masone@masonm.org)! All the models and code I used to generate these models are open-source and licensed under a permissive license.
 
 ### Who is Mersenne?
 
 For the contest, the clavichord I decided to model was described by the French polymath [Marin Mersenne](https://en.wikipedia.org/wiki/Marin_Mersenne) in his 1636 treatise [Harmonie universelle](https://en.wikipedia.org/wiki/Harmonie_universelle).
+{{< figure
+       src="/clavichord/images/mersennes_clavichord_cropped.webp"
+       alt="Drawing of the clavichord from Harmonie universelle"
+       caption="Drawing of the clavichord from Harmonie universelle"
+       width="400"
+       link="/clavichord/images/mersennes_clavichord_cropped.webp"
+       target="_blank"
+>}}
 
 If you're a programmer like me, you've probably heard of "Mersenne primes": prime numbers of the form \(M_n = 2^n -1\). Mersenne primes were one of Meresenne's many contributions to math, but the application of math to music was what interested him the most.[^5]
 Mersenne sought to establish a science of music, and his work formed the root of modern acoustics.[^6] 
 
 ## Modeling the clavichord
 
+As much as I love OpenSCAD, I hesitate to recommend it to non-programmers.
+OpenSCAD is written by, and for, programmers: all models are written using a declarative DSL, and the editor provides little help in translating your ideas into code.
+Although the learning curve isn't as steep as some other CAD programs, it's still considerable for someone without a programming background.
+
+Like OpenCAD, Zoo is also code-based, but includes several features to make CAD more accessible to non-programmers. The editor is far more intuitive and interactive, allowing point-and-click editing that automatically generates the appropriate code.
+More interestingly, it integrates with a VLM called [Zookeeper](https://zoo.dev/zookeeper), which can take plain English prose and translate it directly to code.
+
+
 ### First Attempt
 
+To start, I tried feeding in the drawing shown above, along with Mersenne's description in the original French. How did it do?
+
 {{< figure
-       src="/clavichord/images/mersennes_clavichord_cropped.png"
-       alt="Drawing of the clavichord from Harmonie universelle"
-       width="400"
-       caption="Drawing of the clavichord from Harmonie universelle"
+       src="/clavichord/images/first_attempt.webp"
+       alt="Result of giving Zookeeper the original diagram/description"
+       width="600"
+       link="/clavichord/images/first_attempt.webp"
+       target="_blank"
 >}}
+
+In a word: poorly.
+But expecting Zoo to generate a plausible instrument from Mersenne's sparse and ambiguous description is unreasonable, because until relatively recently, no human could either.
+Some scholars even expressed doubt whether Mersenne was describing an actual instrument, or simply something he imagined.[^7] 
+
+It wasn't until Peter Bavington built a reconstruction of the instrument in the early 2000s that it was clear the instrument Mersenne described was plausible and coherent.
+Bavington explained his reconstruction in his excellent 2011 paper [Reconstructing Mersenne's Clavichord](https://www.peter-bavington.co.uk/Mersennepaper.pdf), which formed the basis of my attempts moving forward.
+
 ### Case
+
+I decided to break up the model into discrete components and model each separately, starting with the case. Bavington provided exact dimensions on the case in [Paris inches](https://en.wikipedia.org/wiki/Paris_inch), which I converted to millimeters and put into a [params.kcl](https://github.com/MasonM/mersennes_clavichord/blob/main/params.kcl) file.  
+Then, I asked Zookeeper to generate the code for the case's five boards. [The result it gave me](https://github.com/MasonM/mersennes_clavichord/commit/ced92cade071bbdae9460aaf3163039ab7eb18ed) was a good start, but needed manual editing. 
+Zookeeper tends to avoid code reuse, so to make edits easier, I created a [`cube()` helper inspired by OpenSCAD](https://github.com/MasonM/mersennes_clavichord/blob/eec793b1ff8edffd8e232627203b08a27487e058/utils.kcl#L7C1-L33C2) and refactored the case to use that for 4 out of the 5 boards. 
+
+{{< 3d-model
+       src="/clavichord/models/case.glb"
+       caption="Case ([source code](https://github.com/MasonM/mersennes_clavichord/blob/main/case.kcl))"
+>}}
+
 ### Keyboard
 
 #### Mersenne's Laws
@@ -184,11 +220,14 @@ export fn tangentXForKeyFn(@keyIdx) {
 
 ## What's Next?
 
+I haven't built this (or any) clavichord before, so it's likely I made mistakes. If you notice any, please [contact me](mailto:masone@masonm.org)! All the code I used to generate these models are open-source and licensed under a permissive license.
+
 [^1]: Until I edited it, the [Wikipedia article on the clavichord](https://en.wikipedia.org/wiki/Clavichord) claimed it was invented in the early 14th century. I read both sources it cited, and neither substantiates that claim. Both state that the first unambiguous evidence was in the early 15th century. It's probable it was invented earlier, but exact dating is difficult because literary sources of that time used the terms "clavichord" and "monochord" interchangeably.
 [^2]: Brauchli, Bernard (1998). "The Clavichord", pp. 1
 [^3]: Ibid., 216-217
 [^4]: Ibid., 267
 [^5]: A. Malet and D. Cozzoli, “Mersenne and Mixed Mathematics,” Perspectives on Science, vol. 18, no. 1, pp. 3, May 2010, doi: 10.1162/posc.2010.18.1.1.
 [^6]: Bohn, Dennis A. (1988). "Environmental Effects on the Speed of Sound". Journal of the Audio Engineering Society. 36 (4): 223–231
-[^7]: Rasch, Rudolf. (2006). Tuning and temperament. The Cambridge History of Western Music Theory. 
-[^8]: Barbour, J. M. (2004). "Tuning and Temperament: A Historical Survey." United States: Dover Publications. Page 98
+[^7]: Edwin M. Ripin et al., Early Keyboard Instruments (London: Macmillan, 1989), p. 155.
+[^8]: Rasch, Rudolf. (2006). Tuning and temperament. The Cambridge History of Western Music Theory. 
+[^9]: Barbour, J. M. (2004). "Tuning and Temperament: A Historical Survey." United States: Dover Publications. Page 98
