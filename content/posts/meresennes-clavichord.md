@@ -4,6 +4,8 @@ date: 2026-06-14
 author: Mason Malone
 ---
 
+## Introduction
+
 As a layman in machine learning, one of the most surprising developments recently has been the rise of Vision Language Models (VLMs) for CAD work.
 I had assumed that the [symbol grounding problem](https://en.wikipedia.org/wiki/Symbol_grounding_problem) would be an insurmountable barrier for anything require precision modeling, yet there have been several CAD projects for doing exactly that.
 
@@ -13,6 +15,7 @@ My submission, [Mersenne's Clavichord](https://zoo.dev/aquarium/8a3d0547-5ac6-41
 This post will walk through how I approached this model. But first:
 
 ## Background and History
+
 ### What's a clavichord?
 
 The clavichord is a keyboard instrument that was invented at some point before 1404, and flourished for centuries in Europe.[^1]
@@ -38,6 +41,7 @@ When the other end of the key is pressed, the tangent rises and strikes the stri
        camera-orbit="12deg 86.15deg 376.7m"
        caption="Clavichord action ([source code](https://github.com/MasonM/urbino_clavichord/blob/main/clavichord_action_diagram.scad))"
        style="height: 400px; background-color: #ffffff"
+       interaction-prompt="auto"
 >}}
 
 By rocking the key slightly, the player can alter the tension of the string for the duration of the note, which changes the pitch.
@@ -68,6 +72,7 @@ As far as I know, nobody has created CAD models of clavichords before, so I took
        camera-orbit="-20.92deg 44.33deg 1300m"
        caption="The Urbino clavichord ([source code](https://github.com/MasonM/urbino_clavichord/blob/main/clavichord.scad)) ([interactive editor](https://masonm.org/urbino_clavichord.html))"
        style="height: 400px"
+       interaction-prompt="auto"
 >}}
 
 ### Who is Mersenne?
@@ -75,8 +80,8 @@ As far as I know, nobody has created CAD models of clavichords before, so I took
 For the contest, the clavichord I decided to model was described by the French polymath [Marin Mersenne](https://en.wikipedia.org/wiki/Marin_Mersenne) in his 1636 treatise [Harmonie universelle](https://en.wikipedia.org/wiki/Harmonie_universelle).
 {{< figure
        src="/clavichord/images/mersennes_clavichord_cropped.webp"
-       alt="Drawing of the clavichord from Harmonie universelle"
-       caption="Drawing of the clavichord from Harmonie universelle"
+       alt="Mersenne's drawing of the clavichord"
+       caption="Mersenne's drawing of the clavichord"
        width="400"
        link="/clavichord/images/mersennes_clavichord_cropped.webp"
        target="_blank"
@@ -87,13 +92,12 @@ Mersenne sought to establish a science of music, and his work formed the root of
 
 ## Modeling the clavichord
 
-As much as I love OpenSCAD, I hesitate to recommend it to non-programmers.
-OpenSCAD is written by, and for, programmers: all models are written using a declarative DSL, and the editor provides little help in translating your ideas into code.
+As much as I love OpenSCAD, I hesitate to recommend it to non-programmers, which is approximately 99% of music historians.
+OpenSCAD is written for programmers: all models are written using a [declarative DSL](https://openscad.org/cheatsheet/), and the editor provides little help in translating your ideas into code.
 Although the learning curve isn't as steep as some other CAD programs, it's still considerable for someone without a programming background.
 
-Like OpenCAD, Zoo is also code-based, but includes several features to make CAD more accessible to non-programmers. The editor is far more intuitive and interactive, allowing point-and-click editing that automatically generates the appropriate code.
+Like OpenSCAD, Zoo is also code-based, but includes several features to make it more accessible to non-programmers. The editor is far more intuitive and interactive, allowing point-and-click editing that automatically generates the appropriate code.
 More interestingly, it integrates with a VLM called [Zookeeper](https://zoo.dev/zookeeper), which can take plain English prose and translate it directly to code.
-
 
 ### First Attempt
 
@@ -113,6 +117,7 @@ Some scholars even expressed doubt whether Mersenne was describing an actual ins
 
 It wasn't until Peter Bavington built a reconstruction of the instrument in the early 2000s that it was clear the instrument Mersenne described was plausible and coherent.
 Bavington explained his reconstruction in his excellent 2011 paper [Reconstructing Mersenne's Clavichord](https://www.peter-bavington.co.uk/Mersennepaper.pdf), which formed the basis of my attempts moving forward.
+Without Bavington's work, this model wouldn't have been possible.
 
 ### Case
 
@@ -125,19 +130,43 @@ Zookeeper tends to avoid code reuse, so to make edits easier, I created a [`cube
        src="/clavichord/models/case.glb"
        caption="Case ([source code](https://github.com/MasonM/mersennes_clavichord/blob/main/case.kcl))"
        style="height: 400px"
+       interaction-prompt="none"
 >}}
 
 ### Toolbox and Right Compartment
+
+The left-side of the clavichord has a rectangular toolbox, which was typically used to hold spare parts and tools.
+Bavington's reconstruction had a lid on the toolbox with a knob to open it, which I reproduced here.
+I didn't know the appropriate terminology for the ornamentation around the lid, so I told Zookeeper to created a "stepped terrace" effect, with three steps leading to the base. Zookeeper handled that well.
+
+I was also unsure of the terminology for the compartment to the right of the toolbox, so I called it the "right compartment". It shares the same ornamentation as the toolbox, but without a knob.
 
 {{< 3d-model
        src="/clavichord/models/toolbox_right_compartment.glb"
        caption="Toolbox ([source](https://github.com/MasonM/mersennes_clavichord/blob/main/toolbox.kcl)) and right compartment ([source](https://github.com/MasonM/mersennes_clavichord/blob/main/right_compartment.kcl))"
        style="height: 400px"
+       interaction-prompt="none"
 >}}
 
 
+### Soundbox
+
+The soundbox consists of the soundboard, the wrestplank, and the belly rail. The wrestplank holds tuning pins for all 70 strings, the soundboard acts as a diaphragm to transform vibrations into acoustic energy, and the belly rail supports the soundboard, with 7 openings to allow the sound to escape.
+
+These were straightforward to model, as each part can be modeled using the `cube()` function described earlier. The openings in the belly rail were achieved by using the [subtract()](https://zoo.dev/docs/kcl-std/functions/std-solid-subtract) to cut out 7 cubes, each of which was generated using [patternLinear3d()](https://zoo.dev/docs/kcl-std/functions/std-solid-patternLinear3d).
+
+{{< 3d-model
+       src="/clavichord/models/soundbox.glb"
+       caption="Soundbox ([source](https://github.com/MasonM/mersennes_clavichord/blob/main/soundbox.kcl))"
+       style="height: 400px"
+       interaction-prompt="none"
+>}}
 
 ### Keyboard
+
+
+
+### Key Levers
 
 #### Mersenne's Laws
 
