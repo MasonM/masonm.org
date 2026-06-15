@@ -12,7 +12,7 @@ I had assumed that the [symbol grounding problem](https://en.wikipedia.org/wiki/
 One is [Zoo](https://zoo.dev/), a CAD program that integrates with a VLM to create 3D models using [KCL](https://zoo.dev/docs/kcl-book/intro.html), their DSL (domain-specific language).
 The company behind Zoo hosted a design contest recently, so I decided to enter to see what it's capable of.
 My submission, [Mersenne's Clavichord](https://zoo.dev/aquarium/8a3d0547-5ac6-41f7-82f4-90084e617db2) won first place. 
-This post will walk through how I approached this model. But first:
+This post will walk through how I approached this model.
 
 ## Background and History
 
@@ -20,11 +20,11 @@ This post will walk through how I approached this model. But first:
 
 The clavichord is a keyboard instrument that was invented at some point before 1404, and flourished for centuries in Europe.[^1]
 It a was a highly expressive instrument, but too quiet for concert use, and gradually faded away with the rise of the piano.[^2]
-Despite its weak sound, it was the preferred instrument for many composers, notably C.P.E. Bach, who considered it superior to the piano.[^3] 
+Despite its weak sound, it was the preferred instrument for many composers, notably C.P.E. Bach, who considered it superior to the piano in many respects.[^3] 
 
 I've been listening to classical music for over 20 years, but I was only vaguely aware of the clavichord until last year, when I randomly stumbled on the album [Clavichord Recital by Gustav Leonhardt](https://open.spotify.com/album/7cr4GFB8PtGqEa4KtfUtzO?si=00c4d272c07a4331).
 I immediately fell in love with that album, but I began to wonder: why is this my first time hearing a clavichord?
-I had heard Bach played on the piano countless times, yet never the clavichord, despite it being the instrument on which he likely wrote of this works. 
+I had heard Bach played on the piano countless times, yet never the clavichord, despite it being the instrument on which he likely wrote many (if not most) of this works. 
 
 At first, I thought the answer was that the piano was simply a superior instrument, so there was no reason to perform Bach on the clavichord anymore.
 But then in Leonhardt's performance of the Sonata in B Minor, I heard what sounded like vibrato.
@@ -75,6 +75,15 @@ As far as I know, nobody has created CAD models of clavichords before, so I took
        interaction-prompt="auto"
 >}}
 
+### OpenSCAD and Zoo
+
+As much as I love OpenSCAD, I hesitate to recommend it to non-programmers, which is approximately 99% of early music historians.
+OpenSCAD is designed for programmers: all geometry is expressed using a [declarative DSL](https://openscad.org/cheatsheet/), and the editor provides little help in translating your ideas into code.
+Although the learning curve isn't as steep as some other CAD programs, it's still considerable for someone without a programming background.
+
+Like OpenSCAD, Zoo is also code-based, but includes several features to make it more accessible to non-programmers. The editor is far more intuitive and interactive, allowing point-and-click editing that automatically generates the appropriate code.
+More interestingly, it integrates with a VLM called [Zookeeper](https://zoo.dev/zookeeper), which can take plain English prose and translate it directly to code.
+
 ### Who is Mersenne?
 
 For the contest, the clavichord I decided to model was described by the French polymath [Marin Mersenne](https://en.wikipedia.org/wiki/Marin_Mersenne) in his 1636 treatise [Harmonie universelle](https://en.wikipedia.org/wiki/Harmonie_universelle).
@@ -92,16 +101,9 @@ Mersenne sought to establish a science of music, and his work formed the root of
 
 ## Modeling the clavichord
 
-As much as I love OpenSCAD, I hesitate to recommend it to non-programmers, which is approximately 99% of music historians.
-OpenSCAD is written for programmers: all models are written using a [declarative DSL](https://openscad.org/cheatsheet/), and the editor provides little help in translating your ideas into code.
-Although the learning curve isn't as steep as some other CAD programs, it's still considerable for someone without a programming background.
-
-Like OpenSCAD, Zoo is also code-based, but includes several features to make it more accessible to non-programmers. The editor is far more intuitive and interactive, allowing point-and-click editing that automatically generates the appropriate code.
-More interestingly, it integrates with a VLM called [Zookeeper](https://zoo.dev/zookeeper), which can take plain English prose and translate it directly to code.
-
 ### First Attempt
 
-To start, I tried feeding in the drawing shown above, along with Mersenne's description in the original French. How did it do?
+To start, I tried feeding Zookeeper the drawing shown above, along with Mersenne's description in the original French. How did it do?
 
 {{< figure
        src="/clavichord/images/first_attempt.webp"
@@ -112,11 +114,11 @@ To start, I tried feeding in the drawing shown above, along with Mersenne's desc
 >}}
 
 In a word: poorly.
-But expecting Zoo to generate a plausible instrument from Mersenne's sparse and ambiguous description is unreasonable, because until relatively recently, no human could either.
+But expecting Zookeeper to generate a plausible instrument from Mersenne's sparse and ambiguous description is unreasonable, because until relatively recently, no human could either.
 Some scholars even expressed doubt whether Mersenne was describing an actual instrument, or simply something he imagined.[^7] 
 
-It wasn't until Peter Bavington built a reconstruction of the instrument in the early 2000s that it was clear the instrument Mersenne described was plausible and coherent.
-Bavington explained his reconstruction in his excellent 2011 paper [Reconstructing Mersenne's Clavichord](https://www.peter-bavington.co.uk/Mersennepaper.pdf), which formed the basis of my attempts moving forward.
+It wasn't until Peter Bavington built a reconstruction in ~2011 that it was clear the instrument Mersenne described was real.
+Bavington explained his reconstruction in his excellent paper [Reconstructing Mersenne's Clavichord](https://www.peter-bavington.co.uk/Mersennepaper.pdf), which formed the basis of my attempts moving forward.
 Without Bavington's work, this model wouldn't have been possible.
 
 ### Case
@@ -155,7 +157,7 @@ I was also unsure of the terminology for the compartment to the right of the too
 
 The soundbox consists of the soundboard, the wrestplank, and the belly rail. The wrestplank holds tuning pins for all 70 strings, the soundboard acts as a diaphragm to transform vibrations into acoustic energy, and the belly rail supports the soundboard, with 7 openings to allow the sound to escape.
 
-These were straightforward to model, as each part can be modeled using the `cube()` function described earlier. The openings in the belly rail were achieved by using the [subtract()](https://zoo.dev/docs/kcl-std/functions/std-solid-subtract) to cut out 7 cubes, each of which was generated using [patternLinear3d()](https://zoo.dev/docs/kcl-std/functions/std-solid-patternLinear3d).
+These were straightforward to model, as each part can be modeled using the `cube()` function described earlier. The openings in the belly rail were achieved by using the [subtract()](https://zoo.dev/docs/kcl-std/functions/std-solid-subtract) function to cut out 7 cubes, each of which was generated using [patternLinear3d()](https://zoo.dev/docs/kcl-std/functions/std-solid-patternLinear3d).
 
 {{< 3d-model
        src="/clavichord/models/soundbox.glb"
@@ -176,9 +178,11 @@ These were straightforward to model, as each part can be modeled using the `cube
 >}}
 
 
+### Bridges and Strings
+
 ### Key Levers
 
-This is the hard part. 
+Now comes the hard part. Each key has a lever with a tangent, and the lever must be shaped such that when the tangent rises, it strikes the string at the right position. But how do we determine the right position of the tangent? Unlike Verbeek's paper, Bavington didn't include the sounding lengths for each key. That means we need to calculate them ourselves.
 
 #### Mersenne's Laws
 
@@ -196,9 +200,11 @@ $$
 
 where $d$ is the string diameter, $T$ is the tension, and $\rho$ is the density. This is the version we'll use.
 
+#### Calculating the frequency
+
 #### Fretting and Temperaments
 
-Clavichords can be divided into two groups: fretted and unfretted. A fretted clavichord has multiple keys that share the same string (or group of strings). An unfretted clavichord has dedicated strings for each key. Most early clavichords were fretted, since they were easier to build, due to requiring fewer strings. An obvious disadvantage of fretted clavichords is you can't play multiple keys that share a string at the same time, which instrument makers tried to mitigate by fretting keys that aren't typically played together.
+Mersenne's clavichord is a fretted instrument. Clavichords can be divided into two groups: fretted and unfretted. A fretted clavichord has multiple keys that share the same string (or group of strings). An unfretted clavichord has dedicated strings for each key. Most early clavichords were fretted, since they were easier to build, due to requiring fewer strings. An obvious disadvantage of fretted clavichords is you can't play multiple keys that share a string at the same time, which instrument makers tried to mitigate by fretting keys that aren't typically played together.
 
 Another disadvantage, which was of interest to Mersenne, is you can't change the [temperament](https://en.wikipedia.org/wiki/Musical_temperament) of the clavichord. In Mersenne's day, the most common temperament was [meantone temperament](https://en.wikipedia.org/wiki/Meantone_temperament).[^3] Mersenne was an early advocate of [equal temperament](https://en.wikipedia.org/wiki/Equal_temperament), which is the most common temperament used today.[^4]
 
@@ -268,10 +274,13 @@ export fn tangentXForKeyFn(@keyIdx) {
   }
 }
 ```
-### Bridges
+### What's Missing?
 
 
 ## What's Next?
+
+
+## Conclusion
 
 I haven't built this (or any) clavichord before, so it's likely I made mistakes. If you notice any, please [contact me](mailto:masone@masonm.org)! All the code I used to generate these models are open-source and licensed under a permissive license.
 
