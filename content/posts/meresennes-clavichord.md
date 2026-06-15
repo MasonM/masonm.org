@@ -130,6 +130,7 @@ Zookeeper tends to avoid code reuse, so to make edits easier, I created a [`cube
        src="/clavichord/models/case.glb"
        caption="Case ([source code](https://github.com/MasonM/mersennes_clavichord/blob/main/case.kcl))"
        style="height: 400px"
+       camera-orbit="-18.06deg 53.79deg 2.571m" 
        interaction-prompt="none"
 >}}
 
@@ -145,6 +146,7 @@ I was also unsure of the terminology for the compartment to the right of the too
        src="/clavichord/models/toolbox_right_compartment.glb"
        caption="Toolbox ([source](https://github.com/MasonM/mersennes_clavichord/blob/main/toolbox.kcl)) and right compartment ([source](https://github.com/MasonM/mersennes_clavichord/blob/main/right_compartment.kcl))"
        style="height: 400px"
+       camera-orbit="-18.06deg 53.79deg 2.571m" 
        interaction-prompt="none"
 >}}
 
@@ -159,14 +161,24 @@ These were straightforward to model, as each part can be modeled using the `cube
        src="/clavichord/models/soundbox.glb"
        caption="Soundbox ([source](https://github.com/MasonM/mersennes_clavichord/blob/main/soundbox.kcl))"
        style="height: 400px"
+       camera-orbit="-18.06deg 53.79deg 2.571m" 
        interaction-prompt="none"
 >}}
 
 ### Keyboard
 
+{{< 3d-model
+       src="/clavichord/models/keyboard.glb"
+       caption="Keyboard ([source](https://github.com/MasonM/mersennes_clavichord/blob/main/keyboard.kcl))"
+       style="height: 400px"
+       camera-orbit="-18.06deg 53.79deg 2.571m" 
+       interaction-prompt="none"
+>}}
 
 
 ### Key Levers
+
+This is the hard part. 
 
 #### Mersenne's Laws
 
