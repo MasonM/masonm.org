@@ -215,7 +215,7 @@ Initially, I used the [map()](https://zoo.dev/docs/kcl-std/functions/std-array-m
 ### Bridges and Strings
 
 The clavichord has 70 strings in groups of two. Each group is called a "course", and each tangent strikes a single course. 
-An astute reader will notice a problem here: if there's 35 courses and 49 keys, then 
+But wait, how can there be 49 keys and only 35 courses?
 
 {{< 3d-model
        src="/clavichord/models/strings_and_bridges.glb"
@@ -319,6 +319,24 @@ export fn tangentXForKeyFn(@keyIdx) {
   }
 }
 ```
+
+{{< 3d-model
+       src="/clavichord/models/key_levers_and_tangents.glb"
+       caption="Key levers ([source](https://github.com/MasonM/mersennes_clavichord/blob/main/key_levers.kcl)) and tangents ([source](https://github.com/MasonM/mersennes_clavichord/blob/main/tangents.kcl))"
+       style="height: 400px"
+       camera-orbit="-18.06deg 53.79deg 2.571m" 
+       interaction-prompt="none"
+>}}
+
+### All the rest
+
+{{< 3d-model
+       src="/clavichord/models/mersennes_clavichord.glb"
+       caption="The final product ([source](https://github.com/MasonM/mersennes_clavichord/blob/main/main.kcl))"
+       style="height: 400px"
+       camera-orbit="-18.06deg 53.79deg 2.571m" 
+       interaction-prompt="none"
+>}}
 ### What's Missing?
 
 
