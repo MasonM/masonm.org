@@ -181,11 +181,7 @@ fn naturalKeyX(@naturalIdx) {
 
 To find the $x$ coordinate of an accidental at index $accidentalIdx$, we can reuse $naturalKeyX$ if we can find the index of the adjacent natural key, $adjNaturalIdx$.
 Since each octave is the same, finding $adjNaturalIdx$ for the first octave can be used for all the rest.
-{{< figure
-       src="/clavichord/images/keyboard_one_octave.svg"
-       alt="Result of giving Zookeeper the original diagram/description"
-       width="600"
->}}
+{{< svg src="/images/keyboard_one_octave.svg" >}}
 
 The pattern is clear: when $accidentalIdx=0$, then $naturalIdx=1$, and when $accidentalIdx=2$, then $naturalIdx=3$, and so on.
 ```rust
