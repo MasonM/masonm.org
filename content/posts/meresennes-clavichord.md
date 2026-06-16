@@ -125,7 +125,7 @@ Without Bavington's work, this model wouldn't have been possible.
 
 I decided to break up the model into discrete components and model each separately, starting with the case. Bavington provided exact dimensions on the case in [Paris inches](https://en.wikipedia.org/wiki/Paris_inch), which I converted to millimeters and put into a [params.kcl](https://github.com/MasonM/mersennes_clavichord/blob/main/params.kcl) file.  
 
-Then, I asked Zookeeper to generate the code for the case's five boards. [The result it gave me](https://github.com/MasonM/mersennes_clavichord/commit/ced92cade071bbdae9460aaf3163039ab7eb18ed) was a good start, but needed manual editing. 
+Then, I asked Zookeeper to generate the code for the five wooden boards that make up the case. [The result it gave me](https://github.com/MasonM/mersennes_clavichord/commit/ced92cade071bbdae9460aaf3163039ab7eb18ed) was a good start, but needed manual editing. 
 Zookeeper tends to avoid code reuse, so to make edits easier, I created a [`cube()` helper inspired by OpenSCAD](https://github.com/MasonM/mersennes_clavichord/blob/eec793b1ff8edffd8e232627203b08a27487e058/utils.kcl#L7C1-L33C2) and refactored the case to use that for 4 out of the 5 boards. 
 
 {{< 3d-model
@@ -169,6 +169,40 @@ These were straightforward to model, as each part can be modeled using the `cube
 
 ### Keyboard
 
+The clavichord has 49 keys, ranging from \(C_2\) to \(C_4\), with a standard 12-note octave.
+The number of octaves is therefore \(\lfloor \frac{49-1}{12}\rfloor=4\), the number of natural keys is \(4*7+1=29\), and the number of accidental keys is \(4*5=20\).
+
+To find the $x$ coordinate of a natual key at index $naturalIdx$, we can simply multiply the index by the width of each natural key, which we can calculate by dividing the keywell length by the number of keys, and adding that to an offset $keyStartX$:
+```rust
+fn naturalKeyX(@naturalIdx) {
+  return keyStartX + naturalIdx * keywellLength / numNaturalKeys
+}
+```
+
+To find the $x$ coordinate of an accidental at index $accidentalIdx$, we can reuse $naturalKeyX$ if we can find the index of the adjacent natural key, $adjNaturalIdx$.
+Since each octave is the same, finding $adjNaturalIdx$ for the first octave can be used for all the rest.
+{{< figure
+       src="/clavichord/images/keyboard_one_octave.svg"
+       alt="Result of giving Zookeeper the original diagram/description"
+       width="600"
+>}}
+
+The pattern is clear: when $accidentalIdx=0$, then $naturalIdx=1$, and when $accidentalIdx=2$, then $naturalIdx=3$, and so on.
+```rust
+adjNaturalIdxFirstOctave = [0, 1, 3, 4, 5]
+fn accidentalAdjNaturalIdx(@accidentalIdx) {
+  octaveIdx = floor(accidentalIdx / 5)
+  accidentalIdxInOctave = accidentalIdx % 5
+  return octaveIdx * 7 + adjNaturalIdxFirstOctave[accidentalIdxInOctave]
+}
+
+fn accidentalKeyX(@accidentalIdx) {
+  baseNaturalIdx = accidentalAdjNaturalIdx(accidentalIdx)
+  return naturalKeyX(baseNaturalIdx + 1) - (accidentalKeyWidth / 2)
+}
+```
+
+
 {{< 3d-model
        src="/clavichord/models/keyboard.glb"
        caption="Keyboard ([source](https://github.com/MasonM/mersennes_clavichord/blob/main/keyboard.kcl))"
@@ -182,11 +216,11 @@ These were straightforward to model, as each part can be modeled using the `cube
 
 ### Key Levers
 
-Now comes the hard part. Each key has a lever with a tangent, and the lever must be shaped such that when the tangent rises, it strikes the string at the right position. But how do we determine the right position of the tangent? Unlike Verbeek's paper, Bavington didn't include the sounding lengths for each key. That means we need to calculate them ourselves.
+This is where it gets slightly tricky. Each key has a lever with a tangent at the far end, and the lever must be shaped such that when the tangent rises, it strikes the string at the right position. But how do we determine the right position of the tangent? Unlike Verbeek's paper, Bavington didn't include the sounding lengths for each key. That means we need to calculate them ourselves.
 
 #### Mersenne's Laws
 
- The sounding length, along with the tension and mass per unit length of the string, determines the [fundamental frequency](https://en.wikipedia.org/wiki/Fundamental_frequency) of the key being played. Mersenne was the first to discover and prove the mathematical relationship between these variables, which is now known as [Mersenne's laws](https://en.wikipedia.org/wiki/Mersenne%27s_laws). The usual form of this relationship is given as:
+The sounding length, along with the tension and mass per unit length of the string, determines the [fundamental frequency](https://en.wikipedia.org/wiki/Fundamental_frequency) of the key being played. Mersenne was the first to discover and prove the mathematical relationship between these variables, which is now known as [Mersenne's laws](https://en.wikipedia.org/wiki/Mersenne%27s_laws). The usual form of this relationship is given as:
 $$
 f_0=\frac{1}{2L}\sqrt{\frac{F}{\mu}}
 $$
