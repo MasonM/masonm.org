@@ -201,7 +201,8 @@ fn accidentalKeyX(@accidentalIdx) {
   return naturalKeyX(baseNaturalIdx + 1) - (accidentalKeyWidth / 2)
 }
 ```
-
+Now that we calculate the coordinate of each key, we can easily create them using the `cube()` function. 
+Initially, I used the [map()](https://zoo.dev/docs/kcl-std/functions/std-array-map) function to transform an array of key indices to cubes, but I rewrote it to use [patternTransform()](https://zoo.dev/docs/kcl-std/functions/std-solid-patternTransform) because it was much faster.
 
 {{< 3d-model
        src="/clavichord/models/keyboard.glb"
@@ -211,8 +212,18 @@ fn accidentalKeyX(@accidentalIdx) {
        interaction-prompt="none"
 >}}
 
-
 ### Bridges and Strings
+
+The clavichord has 70 strings in groups of two. Each group is called a "course", and each tangent strikes a single course. 
+An astute reader will notice a problem here: if there's 35 courses and 49 keys, then 
+
+{{< 3d-model
+       src="/clavichord/models/strings_and_bridges.glb"
+       caption="Strings ([source](https://github.com/MasonM/mersennes_clavichord/blob/main/strings.kcl)) and bridges ([source](https://github.com/MasonM/mersennes_clavichord/blob/main/bridges.kcl))"
+       style="height: 400px"
+       camera-orbit="-18.06deg 53.79deg 2.571m" 
+       interaction-prompt="none"
+>}}
 
 ### Key Levers
 
