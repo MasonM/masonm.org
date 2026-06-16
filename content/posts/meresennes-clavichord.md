@@ -2,6 +2,7 @@
 title: "Modeling Mersenne's Clavichord"
 date: 2026-06-14
 author: Mason Malone
+description: TODO
 ---
 
 ## Introduction
@@ -117,7 +118,7 @@ In a word: poorly.
 But expecting Zookeeper to generate a plausible instrument from Mersenne's sparse and ambiguous description is unreasonable, because until relatively recently, no human could either.
 Some scholars even expressed doubt whether Mersenne was describing an actual instrument, or simply something he imagined.[^7] 
 
-It wasn't until Peter Bavington built a reconstruction in ~2011 that it was clear the instrument Mersenne described was real.
+It wasn't until Peter Bavington built a reconstruction in ~2011 that it was clear the instrument Mersenne described was plausible and coherent.
 Bavington explained his reconstruction in his excellent paper [Reconstructing Mersenne's Clavichord](https://www.peter-bavington.co.uk/Mersennepaper.pdf), which formed the basis of my attempts moving forward.
 Without Bavington's work, this model wouldn't have been possible.
 
@@ -170,7 +171,7 @@ These were straightforward to model, as each part can be modeled using the `cube
 ### Keyboard
 
 The clavichord has 49 keys, ranging from \(C_2\) to \(C_4\), with a standard 12-note octave.
-The number of octaves is therefore \(\lfloor \frac{49-1}{12}\rfloor=4\), the number of natural keys is \(4*7+1=29\), and the number of accidental keys is \(4*5=20\).
+The number of octaves is therefore \(\lfloor \frac{49}{12}\rfloor=4\), the number of natural keys is \(4*7+1=29\), and the number of accidental keys is \(4*5=20\).
 
 To find the $x$ coordinate of a natual key at index $naturalIdx$, we can simply multiply the index by the width of each natural key, which we can calculate by dividing the keywell length by the number of keys, and adding that to an offset $keyStartX$:
 ```rust
@@ -179,11 +180,14 @@ fn naturalKeyX(@naturalIdx) {
 }
 ```
 
-To find the $x$ coordinate of an accidental at index $accidentalIdx$, we can reuse $naturalKeyX$ if we can find the index of the adjacent natural key, $adjNaturalIdx$.
+To find the $x$ coordinate of an accidental at index $accidentalIdx$, we can reuse $naturalKeyX()$ if we can find the index of the adjacent natural key, $adjNaturalIdx$.
 Since each octave is the same, finding $adjNaturalIdx$ for the first octave can be used for all the rest.
+
+Let's number each natural and accidental key for the first octave so we can determine how to map between the two:
 {{< svg src="/images/keyboard_one_octave.svg" >}}
 
-The pattern is clear: when $accidentalIdx=0$, then $naturalIdx=1$, and when $accidentalIdx=2$, then $naturalIdx=3$, and so on.
+When $accidentalIdx=0$, then the closest natural key to the left is $naturalIdx=0$. When $accidentalIdx=2$, then the closest is $naturalIdx=3$, and so on.
+Translating this to code is straightforward:
 ```rust
 adjNaturalIdxFirstOctave = [0, 1, 3, 4, 5]
 fn accidentalAdjNaturalIdx(@accidentalIdx) {
@@ -197,8 +201,8 @@ fn accidentalKeyX(@accidentalIdx) {
   return naturalKeyX(baseNaturalIdx + 1) - (accidentalKeyWidth / 2)
 }
 ```
-Now that we calculate the coordinate of each key, we can easily create them using the `cube()` function. 
-Initially, I used the [map()](https://zoo.dev/docs/kcl-std/functions/std-array-map) function to transform an array of key indices to cubes, but I rewrote it to use [patternTransform()](https://zoo.dev/docs/kcl-std/functions/std-solid-patternTransform) because it was much faster.
+Now that we can calculate the coordinate of each key, we can model them using the `cube()` function and position them using [translate()](https://zoo.dev/docs/kcl-std/functions/std-transform-translate). 
+Initially, I used the [map()](https://zoo.dev/docs/kcl-std/functions/std-array-map) function to transform an array of key indices to cubes, but I rewrote it to use [patternTransform()](https://zoo.dev/docs/kcl-std/functions/std-solid-patternTransform) for performance.
 
 {{< 3d-model
        src="/clavichord/models/keyboard.glb"
@@ -213,6 +217,7 @@ Initially, I used the [map()](https://zoo.dev/docs/kcl-std/functions/std-array-m
 The clavichord has 70 strings in groups of two. Each group is called a "course", and each tangent strikes a single course. 
 But wait, how can there be 49 keys and only 35 courses?
 
+
 {{< 3d-model
        src="/clavichord/models/strings_and_bridges.glb"
        caption="Strings ([source](https://github.com/MasonM/mersennes_clavichord/blob/main/strings.kcl)) and bridges ([source](https://github.com/MasonM/mersennes_clavichord/blob/main/bridges.kcl))"
@@ -223,11 +228,12 @@ But wait, how can there be 49 keys and only 35 courses?
 
 ### Key Levers
 
-This is where it gets slightly tricky. Each key has a lever with a tangent at the far end, and the lever must be shaped such that when the tangent rises, it strikes the string at the right position. But how do we determine the right position of the tangent? Unlike Verbeek's paper, Bavington didn't include the sounding lengths for each key. That means we need to calculate them ourselves.
+This is where it gets slightly tricky. The key levers attach to the corresponding key and support a tangent at the far end, which must be positioned such that when the tangent rises, it strikes the string to create the appropriate sounding length for the key.
+But how do we determine the sounding lengths for each key? Unlike Verbeek's paper, Bavington didn't include precise measurements for the sounding lengths. That means we need to calculate them ourselves.
 
 #### Mersenne's Laws
 
-The sounding length, along with the tension and mass per unit length of the string, determines the [fundamental frequency](https://en.wikipedia.org/wiki/Fundamental_frequency) of the key being played. Mersenne was the first to discover and prove the mathematical relationship between these variables, which is now known as [Mersenne's laws](https://en.wikipedia.org/wiki/Mersenne%27s_laws). The usual form of this relationship is given as:
+Thankfully, Mersenne gave us the tools to do this! The sounding length, along with the tension and mass per unit length of the string, determines the [fundamental frequency](https://en.wikipedia.org/wiki/Fundamental_frequency) of the key being played. Mersenne was the first to discover and prove the mathematical relationship between these variables, which is now known as [Mersenne's laws](https://en.wikipedia.org/wiki/Mersenne%27s_laws). The usual form of this relationship is given as:
 $$
 f_0=\frac{1}{2L}\sqrt{\frac{F}{\mu}}
 $$
