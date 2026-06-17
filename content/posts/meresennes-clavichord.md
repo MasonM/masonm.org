@@ -158,7 +158,7 @@ I was also unsure of the terminology for the compartment to the right of the too
 
 The soundbox consists of the soundboard, the wrestplank, and the belly rail. The wrestplank holds tuning pins for all 70 strings, the soundboard acts as a diaphragm to transform vibrations into acoustic energy, and the belly rail supports the soundboard, with 7 openings to allow the sound to escape.
 
-These were straightforward to model, as each part can be modeled using the `cube()` function described earlier. The openings in the belly rail were achieved by using the [subtract()](https://zoo.dev/docs/kcl-std/functions/std-solid-subtract) function to cut out 7 cubes, each of which was generated using [patternLinear3d()](https://zoo.dev/docs/kcl-std/functions/std-solid-patternLinear3d).
+These were straightforward to model, as each part can be modeled using the `cube()` function described earlier. The openings in the belly rail were achieved by using the [subtract()](https://zoo.dev/docs/kcl-std/functions/std-solid-subtract) function to cut out 7 holes using cubes generated via [patternLinear3d()](https://zoo.dev/docs/kcl-std/functions/std-solid-patternLinear3d).
 
 {{< 3d-model
        src="/clavichord/models/soundbox.glb"
@@ -173,21 +173,21 @@ These were straightforward to model, as each part can be modeled using the `cube
 The clavichord has 49 keys, ranging from \(C_2\) to \(C_4\), with a standard 12-note octave.
 The number of octaves is therefore \(\lfloor \frac{49}{12}\rfloor=4\), the number of natural keys is \(4*7+1=29\), and the number of accidental keys is \(4*5=20\).
 
-To find the $x$ coordinate of a natual key at index $naturalIdx$, we can simply multiply the index by the width of each natural key, which we can calculate by dividing the keywell length by the number of keys, and adding that to an offset $keyStartX$:
+To find the $x$ coordinate of a natual key at index $naturalIdx$, we can simply multiply the index by the width of each natural key, which we can calculate by dividing the keywell length by the number of keys, and adding that to an offset $keyStartX$. Here's the resulting KCL code:
 ```rust
 fn naturalKeyX(@naturalIdx) {
   return keyStartX + naturalIdx * keywellLength / numNaturalKeys
 }
 ```
 
-To find the $x$ coordinate of an accidental at index $accidentalIdx$, we can reuse $naturalKeyX()$ if we can find the index of the adjacent natural key, $adjNaturalIdx$.
-Since each octave is the same, finding $adjNaturalIdx$ for the first octave can be used for all the rest.
+To find the $x$ coordinate of an accidental at index $accidentalIdx$, we can reuse $naturalKeyX()$ if we can find the index of an adjacent natural key.
+Since each octave is the same, all we need to do is solve this for the first octave, since we can extrapolate to the others using [modular arithmetic](https://en.wikipedia.org/wiki/Modular_arithmetic).
 
 Let's number each natural and accidental key for the first octave so we can determine how to map between the two:
 {{< svg src="/images/keyboard_one_octave.svg" >}}
 
-When $accidentalIdx=0$, then the closest natural key to the left is $naturalIdx=0$. When $accidentalIdx=2$, then the closest is $naturalIdx=3$, and so on.
-Translating this to code is straightforward:
+When $accidentalIdx<2$, then the adjacent natural key to the left has the same index. When $2<=accidentalIdx<=4$, then the closest natural key has the index $accidentalIdx+1$.
+Translating this to KCL is straightforward:
 ```rust
 adjNaturalIdxFirstOctave = [0, 1, 3, 4, 5]
 fn accidentalAdjNaturalIdx(@accidentalIdx) {
@@ -212,11 +212,30 @@ Initially, I used the [map()](https://zoo.dev/docs/kcl-std/functions/std-array-m
        interaction-prompt="none"
 >}}
 
-### Bridges and Strings
+### Strings and Bridges
 
 The clavichord has 70 strings in groups of two. Each group is called a "course", and each tangent strikes a single course. 
 But wait, how can there be 49 keys and only 35 courses?
 
+The answer is that this clavichord is *fretted*, which means multiple tangents share a single course. Most early clavichords were fretted, since they were easier to build and maintain. An obvious disadvantage of fretted clavichords is you can't play multiple keys that share a course at the same time, which instrument makers tried to mitigate by fretting keys that aren't typically played together.
+
+Mersenne's description of which keys were fretted is highly ambiguous. I used Bavington's interpretation:[^8]
+> If we take account of the fact that notes 41 [e2] and 46 [a2] are not included, the most likely meaning is that the top octave is fretted as follows:
+>
+>      c2–c#2 / d2–e♭2 / e2 (alone) / f 2–f#2 / g2–g#2 / a2 (alone) / b♭2–b2–c3 (three together).
+> ...
+>
+> Both Boxall and Brauchli propose that the fretting continued downwards with the same pattern until the 18th course (f–f#), in which case the number of notes and courses matches very nicely; this seemed the most likely solution, and I planned the reconstruction accordingly.
+
+Zookeeper translated that description into [this KCL function](https://github.com/MasonM/mersennes_clavichord/blob/662629c9f6fc161ece2cd8dec83e763ab1c6bded/string_utils.kcl#L74-L93), which is perhaps a bit overcomplicated, but perfectly functional.
+
+To support the strings, the clavichord has five bridges, which transfer vibration to the soundboard. Thankfully, Mersenne's description of the bridges is much clearer (translation courtesy of Bavington):
+> As for the bridges, the first carries six courses of strings, that is 12 [strings]. The second has 9 courses or 18, of which the first 8 are doubled and twisted together, so that there are 20 paired strings. The third bridge supports 8 courses, that is 16 [strings]. The fourth contains three courses or 6 strings, and the fifth has 9 courses: but one can make a single bridge instead of these five.
+
+Again, Zookeeper quickly translated this [into a KCL function](https://github.com/MasonM/mersennes_clavichord/blob/662629c9f6fc161ece2cd8dec83e763ab1c6bded/string_utils.kcl#L37-L72).
+
+I did struggle slightly getting Zookeeper to generate the right shape for bridges, particularly with the sloping edges.
+Not having built a clavichord myself, I'm unsure how important the shape of the bridge is for the acoustics of the instrument, but I hope to find out soon!
 
 {{< 3d-model
        src="/clavichord/models/strings_and_bridges.glb"
@@ -233,7 +252,8 @@ But how do we determine the sounding lengths for each key? Unlike Verbeek's pape
 
 #### Mersenne's Laws
 
-Thankfully, Mersenne gave us the tools to do this! The sounding length, along with the tension and mass per unit length of the string, determines the [fundamental frequency](https://en.wikipedia.org/wiki/Fundamental_frequency) of the key being played. Mersenne was the first to discover and prove the mathematical relationship between these variables, which is now known as [Mersenne's laws](https://en.wikipedia.org/wiki/Mersenne%27s_laws). The usual form of this relationship is given as:
+Thankfully, Mersenne gave us the tools to do this! The sounding length is related to the [fundamental frequency](https://en.wikipedia.org/wiki/Fundamental_frequency), the tension of the string, and the mass per unit length of the string. 
+Mersenne was the first to discover and prove the mathematical relationship between these variables, which is now known as [Mersenne's laws](https://en.wikipedia.org/wiki/Mersenne%27s_laws). The usual form of this relationship is given as:
 $$
 f_0=\frac{1}{2L}\sqrt{\frac{F}{\mu}}
 $$
@@ -251,7 +271,7 @@ where $d$ is the string diameter, $T$ is the tension, and $\rho$ is the density.
 
 #### Fretting and Temperaments
 
-Mersenne's clavichord is a fretted instrument. Clavichords can be divided into two groups: fretted and unfretted. A fretted clavichord has multiple keys that share the same string (or group of strings). An unfretted clavichord has dedicated strings for each key. Most early clavichords were fretted, since they were easier to build, due to requiring fewer strings. An obvious disadvantage of fretted clavichords is you can't play multiple keys that share a string at the same time, which instrument makers tried to mitigate by fretting keys that aren't typically played together.
+Mersenne's clavichord is a fretted instrument. Clavichords can be divided into two groups: fretted and unfretted. A fretted clavichord has multiple keys that share the same string (or group of strings). An unfretted clavichord has dedicated strings for each key. 
 
 Another disadvantage, which was of interest to Mersenne, is you can't change the [temperament](https://en.wikipedia.org/wiki/Musical_temperament) of the clavichord. In Mersenne's day, the most common temperament was [meantone temperament](https://en.wikipedia.org/wiki/Meantone_temperament).[^3] Mersenne was an early advocate of [equal temperament](https://en.wikipedia.org/wiki/Equal_temperament), which is the most common temperament used today.[^4]
 
@@ -334,7 +354,7 @@ export fn tangentXForKeyFn(@keyIdx) {
 
 {{< 3d-model
        src="/clavichord/models/mersennes_clavichord.glb"
-       caption="The final product ([source](https://github.com/MasonM/mersennes_clavichord/blob/main/main.kcl))"
+       caption="The final model ([source](https://github.com/MasonM/mersennes_clavichord/blob/main/main.kcl))"
        style="height: 400px"
        camera-orbit="-18.06deg 53.79deg 2.571m" 
        interaction-prompt="none"
@@ -356,5 +376,6 @@ I haven't built this (or any) clavichord before, so it's likely I made mistakes.
 [^5]: A. Malet and D. Cozzoli, “Mersenne and Mixed Mathematics,” Perspectives on Science, vol. 18, no. 1, pp. 3, May 2010, doi: 10.1162/posc.2010.18.1.1.
 [^6]: Bohn, Dennis A. (1988). "Environmental Effects on the Speed of Sound". Journal of the Audio Engineering Society. 36 (4): 223–231
 [^7]: Edwin M. Ripin et al., Early Keyboard Instruments (London: Macmillan, 1989), p. 155.
+[^8]: Bavington, Peter, "Reconstructing Mersenne's Clavichord". Page 12-13.
 [^8]: Rasch, Rudolf. (2006). Tuning and temperament. The Cambridge History of Western Music Theory. 
 [^9]: Barbour, J. M. (2004). "Tuning and Temperament: A Historical Survey." United States: Dover Publications. Page 98
