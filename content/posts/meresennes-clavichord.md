@@ -214,6 +214,7 @@ Initially, I used the [map()](https://zoo.dev/docs/kcl-std/functions/std-array-m
 
 ### Strings and Bridges
 
+#### Strings
 The clavichord has 70 strings in groups of two. Each group is called a "course", and each tangent strikes a single course. 
 But wait, how can there be 49 keys and only 35 courses?
 
@@ -229,13 +230,18 @@ Mersenne's description of which keys were fretted is highly ambiguous. I used Ba
 
 Zookeeper translated that description into [this KCL function](https://github.com/MasonM/mersennes_clavichord/blob/662629c9f6fc161ece2cd8dec83e763ab1c6bded/string_utils.kcl#L74-L93), which is perhaps a bit overcomplicated, but perfectly functional.
 
-To support the strings, the clavichord has five bridges, which transfer vibration to the soundboard. Thankfully, Mersenne's description of the bridges is much clearer (translation courtesy of Bavington):
+The strings themselves are simple cylinders with a diameter of 0.7mm, and I created a [OpenSCAD-inspired cylinder() function](https://github.com/MasonM/mersennes_clavichord/blob/662629c9f6fc161ece2cd8dec83e763ab1c6bded/utils.kcl#L35-L50) to facilitate this.
+
+#### Bridges
+
+To support the strings, the clavichord has five bridges, which transfer vibrations to the soundboard. Thankfully, Mersenne's description of the bridges is much clearer (translation courtesy of Bavington):
 > As for the bridges, the first carries six courses of strings, that is 12 [strings]. The second has 9 courses or 18, of which the first 8 are doubled and twisted together, so that there are 20 paired strings. The third bridge supports 8 courses, that is 16 [strings]. The fourth contains three courses or 6 strings, and the fifth has 9 courses: but one can make a single bridge instead of these five.
 
 Again, Zookeeper quickly translated this [into a KCL function](https://github.com/MasonM/mersennes_clavichord/blob/662629c9f6fc161ece2cd8dec83e763ab1c6bded/string_utils.kcl#L37-L72).
 
-I did struggle slightly getting Zookeeper to generate the right shape for bridges, particularly with the sloping edges.
-Not having built a clavichord myself, I'm unsure how important the shape of the bridge is for the acoustics of the instrument, but I hope to find out soon!
+While Zookeeper had absolutely no trouble with these kind of mathematical exercises, it did struggle slightly with the shape of the bridges, particularly with respect to the sloping edges.
+The result I ended up seems fairly close to Bavington's reproduction.
+Not having built a clavichord myself, I'm unsure how important the shape of the bridges really is, but I hope to find out soon!
 
 {{< 3d-model
        src="/clavichord/models/strings_and_bridges.glb"
@@ -269,11 +275,51 @@ where $d$ is the string diameter, $T$ is the tension, and $\rho$ is the density.
 
 #### Calculating the frequency
 
-#### Fretting and Temperaments
+The frequency for each key is determined by the [temperament](https://en.wikipedia.org/wiki/Musical_temperament) of the clavichord.
+In Mersenne's day, the most common temperament was [meantone temperament](https://en.wikipedia.org/wiki/Meantone_temperament).[^9]
+Mersenne was an early advocate of [equal temperament](https://en.wikipedia.org/wiki/Equal_temperament), which is the most common temperament used today.[^10] Mersennes proposed the following as the ratio of an equal-tempered semitone:[^11]
+$$
+\sqrt[4]{\frac{2}{3-\sqrt{2}}}
+$$
 
-Mersenne's clavichord is a fretted instrument. Clavichords can be divided into two groups: fretted and unfretted. A fretted clavichord has multiple keys that share the same string (or group of strings). An unfretted clavichord has dedicated strings for each key. 
+The model includes both temperaments. For meantone, the following KCL code calculates the frequency for the key at index $keyIdx$:
+```rust
+meantonePitchClassRatios = [
+  1,
+  5 ^ (7 / 4) / 16,
+  5 ^ (1 / 2) / 2,
+  4 / (5 ^ (3 / 4)),
+  5 / 4,
+  2 / (5 ^ (1 / 4)),
+  5 ^ (3 / 2) / 8,
+  5 ^ (1 / 4),
+  25 / 16,
+  5 ^ (3 / 4) / 2,
+  4 / (5 ^ (1 / 2)),
+  5 * 5 ^ (1 / 4) / 4
+]
+fn meantonePitchRatioForKey(@keyIdx) {
+  octaveIdx = floor(keyIdx / 12)
+  pitchClassIdx = keyIdx % 12
+  return meantonePitchClassRatios[pitchClassIdx] * 2 ^ octaveIdx
+}
 
-Another disadvantage, which was of interest to Mersenne, is you can't change the [temperament](https://en.wikipedia.org/wiki/Musical_temperament) of the clavichord. In Mersenne's day, the most common temperament was [meantone temperament](https://en.wikipedia.org/wiki/Meantone_temperament).[^3] Mersenne was an early advocate of [equal temperament](https://en.wikipedia.org/wiki/Equal_temperament), which is the most common temperament used today.[^4]
+referencePitchA1 = 392
+referenceA1OctaveIdx = 2
+referenceA1PitchRatio = 5 ^ (3 / 4) / 2 * 2 ^ referenceA1OctaveIdx
+fn meantoneFrequencyForKey(@keyIdx) {
+  return referencePitchA1 * meantonePitchRatioForKey(keyIdx) / referenceA1PitchRatio
+}
+```
+
+The code for equal temperament is much simpler:
+```rust
+equalTemperedSemitoneInterval = (2 / (3 - (2 ^ (1 / 2)))) ^ (1 / 4)
+referenceA1KeyIdx = 33
+fn equalTemperedFrequencyForKey(@keyIdx) {
+  return referencePitchA1 * equalTemperedSemitoneInterval ^ (keyIdx - referenceA1KeyIdx)
+}
+```
 
 With an unfretted clavichord, you can change the temperament by adjusting the tension on each string so the corresponding key is in tune. But with a fretted clavichord, changing the tension on a string affects all the keys that share that string, which means you can't tune each key independently. Sometimes you can work around that by bending the tangents sideways to alter the sounding length, but that quickly ruins the key levers. To change the temperament on a fretted clavichord without damaging it, you need to reposition the tangents and key levers.
 
@@ -323,7 +369,7 @@ $$
 This is the final equation implemented by the `tangentXForKeyFn()` function in [string_utils.kcl](./string_utils.kcl).
 
 ```rust
-export fn tangentXForKeyFn(@keyIdx) {
+fn tangentXForKeyFn(@keyIdx) {
   return if keyIdx == 0 {
     // Low C has fixed position relative to the toolbox
     toolboxLength + 10mm
@@ -377,5 +423,6 @@ I haven't built this (or any) clavichord before, so it's likely I made mistakes.
 [^6]: Bohn, Dennis A. (1988). "Environmental Effects on the Speed of Sound". Journal of the Audio Engineering Society. 36 (4): 223–231
 [^7]: Edwin M. Ripin et al., Early Keyboard Instruments (London: Macmillan, 1989), p. 155.
 [^8]: Bavington, Peter, "Reconstructing Mersenne's Clavichord". Page 12-13.
-[^8]: Rasch, Rudolf. (2006). Tuning and temperament. The Cambridge History of Western Music Theory. 
-[^9]: Barbour, J. M. (2004). "Tuning and Temperament: A Historical Survey." United States: Dover Publications. Page 98
+[^9]: Rasch, Rudolf. (2006). Tuning and temperament. The Cambridge History of Western Music Theory. 
+[^10]: Barbour, J. M. (2004). "Tuning and Temperament: A Historical Survey." United States: Dover Publications. Page 98
+[^11]: I got this from the [the Wikipedia article](https://en.wikipedia.org/wiki/Marin_Mersenne), but it doesn't cite its sources, and I'm having trouble locating one. The closest I've found is Rasch's "Tuning and Temperament", which gives Mersenne's string length tables, but not the closed-form equation. 
