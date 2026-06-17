@@ -17,7 +17,7 @@ This post will walk through how I approached this model.
 
 ## Background and History
 
-### What's a clavichord?
+### What's a Clavichord?
 
 The clavichord is a keyboard instrument that was invented at some point before 1404, and flourished for centuries in Europe.[^1]
 It a was a highly expressive instrument, but too quiet for concert use, and gradually faded away with the rise of the piano.[^2]
@@ -32,7 +32,7 @@ But then in Leonhardt's performance of the Sonata in B Minor, I heard what sound
 "Surely that's a recording error", I thought, "everyone knows you can't do vibrato on a keyboard instrument." 
 But I was wrong: unlike virtually every other keyboard instrument, you absolutely can perform vibrato on a clavichord, and it's a consequence of how the action works.
 
-### Clavichord action
+### Clavichord Action
 
 A clavichord action is a simple [class 1 lever](https://en.wikipedia.org/wiki/Lever#Types_of_levers), where one end of each key has a piece of metal called a "tangent".
 When the other end of the key is pressed, the tangent rises and strikes the string. The distance between where the tangent strikes the string and the bridge is called the "sounding length" for that string.
@@ -48,7 +48,7 @@ When the other end of the key is pressed, the tangent rises and strikes the stri
 By rocking the key slightly, the player can alter the tension of the string for the duration of the note, which changes the pitch.
 This is a form of vibrato unique to the clavichord, and is sometimes called "bebung".[^4]
 
-### Why model a clavichord?
+### Why Model a Clavichord?
 
 Even though there are still instrument makers keeping the art of clavichord building alive, many aspects of their construction have been lost to time. 
 Several modern clavichord builders, such as [Peter Bavington](https://www.peter-bavington.co.uk/) and [Pierre Verbeek](https://harpsichords.weebly.com/), have done extensive work to rediscover these lost techniques.
@@ -100,7 +100,7 @@ For the contest, the clavichord I decided to model was described by the French p
 If you're a programmer like me, you've probably heard of "Mersenne primes": prime numbers of the form \(M_n = 2^n -1\). Mersenne primes were one of Meresenne's many contributions to math, but the application of math to music was what interested him the most.[^5]
 Mersenne sought to establish a science of music, and his work formed the root of modern acoustics.[^6] 
 
-## Modeling the clavichord
+## Modeling the Clavichord
 
 ### First Attempt
 
@@ -170,7 +170,7 @@ These were straightforward to model, as each part can be modeled using the `cube
 
 ### Keyboard
 
-The clavichord has 49 keys, ranging from \(C_2\) to \(C_4\), with a standard 12-note octave.
+The clavichord has 49 keys, ranging from \(C\) to \(c^3\), with a standard 12-note octave.
 The number of octaves is therefore \(\lfloor \frac{49}{12}\rfloor=4\), the number of natural keys is \(4*7+1=29\), and the number of accidental keys is \(4*5=20\).
 
 To find the $x$ coordinate of a natual key at index $naturalIdx$, we can simply multiply the index by the width of each natural key, which we can calculate by dividing the keywell length by the number of keys, and adding that to an offset $keyStartX$. Here's the resulting KCL code:
@@ -201,6 +201,7 @@ fn accidentalKeyX(@accidentalIdx) {
   return naturalKeyX(baseNaturalIdx + 1) - (accidentalKeyWidth / 2)
 }
 ```
+
 Now that we can calculate the coordinate of each key, we can model them using the `cube()` function and position them using [translate()](https://zoo.dev/docs/kcl-std/functions/std-transform-translate). 
 Initially, I used the [map()](https://zoo.dev/docs/kcl-std/functions/std-array-map) function to transform an array of key indices to cubes, but I rewrote it to use [patternTransform()](https://zoo.dev/docs/kcl-std/functions/std-solid-patternTransform) for performance.
 
@@ -273,59 +274,38 @@ $$
 
 where $d$ is the string diameter, $T$ is the tension, and $\rho$ is the density. This is the version we'll use.
 
-#### Calculating the frequency
+#### Calculating the Frequency
 
 The frequency for each key is determined by the [temperament](https://en.wikipedia.org/wiki/Musical_temperament) of the clavichord.
 In Mersenne's day, the most common temperament was [meantone temperament](https://en.wikipedia.org/wiki/Meantone_temperament).[^9]
-Mersenne was an early advocate of [equal temperament](https://en.wikipedia.org/wiki/Equal_temperament), which is the most common temperament used today.[^10] Mersennes proposed the following as the ratio of an equal-tempered semitone:[^11]
+Mersenne was an early advocate of [equal temperament](https://en.wikipedia.org/wiki/Equal_temperament), which is the most common temperament used today.[^10] Mersennes proposed the following as the ratio of an equally-tempered semitone:[^11]
 $$
 \sqrt[4]{\frac{2}{3-\sqrt{2}}}
 $$
 
-The model includes both temperaments. For meantone, the following KCL code calculates the frequency for the key at index $keyIdx$:
+The model includes both temperaments.
+For equal temperament, the following KCL code calculates the frequency for the key at index $keyIdx$:
 ```rust
-meantonePitchClassRatios = [
-  1,
-  5 ^ (7 / 4) / 16,
-  5 ^ (1 / 2) / 2,
-  4 / (5 ^ (3 / 4)),
-  5 / 4,
-  2 / (5 ^ (1 / 4)),
-  5 ^ (3 / 2) / 8,
-  5 ^ (1 / 4),
-  25 / 16,
-  5 ^ (3 / 4) / 2,
-  4 / (5 ^ (1 / 2)),
-  5 * 5 ^ (1 / 4) / 4
-]
-fn meantonePitchRatioForKey(@keyIdx) {
-  octaveIdx = floor(keyIdx / 12)
-  pitchClassIdx = keyIdx % 12
-  return meantonePitchClassRatios[pitchClassIdx] * 2 ^ octaveIdx
-}
-
 referencePitchA1 = 392
-referenceA1OctaveIdx = 2
-referenceA1PitchRatio = 5 ^ (3 / 4) / 2 * 2 ^ referenceA1OctaveIdx
-fn meantoneFrequencyForKey(@keyIdx) {
-  return referencePitchA1 * meantonePitchRatioForKey(keyIdx) / referenceA1PitchRatio
-}
-```
-
-The code for equal temperament is much simpler:
-```rust
-equalTemperedSemitoneInterval = (2 / (3 - (2 ^ (1 / 2)))) ^ (1 / 4)
 referenceA1KeyIdx = 33
+equalTemperedSemitoneInterval = (2 / (3 - (2 ^ (1 / 2)))) ^ (1 / 4)
 fn equalTemperedFrequencyForKey(@keyIdx) {
   return referencePitchA1 * equalTemperedSemitoneInterval ^ (keyIdx - referenceA1KeyIdx)
 }
 ```
 
-With an unfretted clavichord, you can change the temperament by adjusting the tension on each string so the corresponding key is in tune. But with a fretted clavichord, changing the tension on a string affects all the keys that share that string, which means you can't tune each key independently. Sometimes you can work around that by bending the tangents sideways to alter the sounding length, but that quickly ruins the key levers. To change the temperament on a fretted clavichord without damaging it, you need to reposition the tangents and key levers.
+[The code for meantone](https://github.com/MasonM/mersennes_clavichord/blob/662629c9f6fc161ece2cd8dec83e763ab1c6bded/temperament.kcl#L5-L29) is more complex, and I'm not fully confident it's correct.
+
+With the frequency out of the way, that leaves the string density and tension as the two remaining variables. 
+If this were an unfretted clavichord, we could treat the tension as almost a free variable, since you can tune each key independently.
+
+That's not the case with a fretted clavichord. Changing the tension on a string (or course) affects all the keys that share that string.
+Sometimes you can work around that by bending the tangents sideways to alter the sounding length, but that quickly ruins the key levers.[^12]
+To change the temperament on a fretted clavichord without damaging it, you need to reposition the tangents, and the key levers supporting them.
 
 #### Solving for the Sounding Length
 
-How does this model know where to position the key levers and tangents? First, let's revisit Mersenne's laws. We know that for fretted keys, we must keep the tension and density of the string constant for every key sharing that string, so let's solve for that. Let $f_0(i)$ be the fundamental frequency for the key at index $i$:
+We know that for fretted keys, we must keep the tension and density of the string constant for every key sharing that string, so let's solve for that. Let $f_0(i)$ be the fundamental frequency for the key at index $i$:
 $$
 \begin{aligned}
 f_0(i)=\frac{1}{L(i)d}\sqrt{\frac{T(i)}{\pi\rho(i)}} \\
@@ -388,6 +368,8 @@ fn tangentXForKeyFn(@keyIdx) {
 }
 ```
 
+Putting all this together, we get the following.
+
 {{< 3d-model
        src="/clavichord/models/key_levers_and_tangents.glb"
        caption="Key levers ([source](https://github.com/MasonM/mersennes_clavichord/blob/main/key_levers.kcl)) and tangents ([source](https://github.com/MasonM/mersennes_clavichord/blob/main/tangents.kcl))"
@@ -426,3 +408,4 @@ I haven't built this (or any) clavichord before, so it's likely I made mistakes.
 [^9]: Rasch, Rudolf. (2006). Tuning and temperament. The Cambridge History of Western Music Theory. 
 [^10]: Barbour, J. M. (2004). "Tuning and Temperament: A Historical Survey." United States: Dover Publications. Page 98
 [^11]: I got this from the [the Wikipedia article](https://en.wikipedia.org/wiki/Marin_Mersenne), but it doesn't cite its sources, and I'm having trouble locating one. The closest I've found is Rasch's "Tuning and Temperament", which gives Mersenne's string length tables, but not the closed-form equation. 
+[^12]: Brauchli, Bernard (1998). "The Clavichord", pp. 102
