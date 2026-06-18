@@ -7,13 +7,19 @@ description: TODO
 
 ## Introduction
 
-As a layman in machine learning, one of the most surprising developments recently has been the rise of Vision Language Models (VLMs) for CAD work.
-I had assumed that the [symbol grounding problem](https://en.wikipedia.org/wiki/Symbol_grounding_problem) would be an insurmountable barrier for anything require precision modeling, yet there have been several CAD projects for doing exactly that.
+I recently took part in a CAD contest hosted by [Zoo](https://zoo.dev/), a modern CAD program intended for hardware design.
+My submission, [Mersenne's Clavichord](https://zoo.dev/aquarium/8a3d0547-5ac6-41f7-82f4-90084e617db2), won first place.
+It's a reconstruction of a 17th-century clavichord desribed by [Marin Mersenne](https://en.wikipedia.org/wiki/Marin_Mersenne). This post will describe my experiences with Zoo and how I approached the model.
 
-One is [Zoo](https://zoo.dev/), a CAD program that integrates with a VLM to create 3D models using [KCL](https://zoo.dev/docs/kcl-book/intro.html), their DSL (domain-specific language).
-The company behind Zoo hosted a design contest recently, so I decided to enter to see what it's capable of.
-My submission, [Mersenne's Clavichord](https://zoo.dev/aquarium/8a3d0547-5ac6-41f7-82f4-90084e617db2) won first place. 
-This post will walk through how I approached this model.
+If you want to hear what this should sound like, check out the excellent album *Mersenne's Clavichord: Keyboard Music in 16th & 17th Century France*, which was performed on a reconstruction of this same instrument built by [Peter Bavington](https://www.peter-bavington.co.uk/).
+{{< figure
+       src="/clavichord/images/mersennes_clavichord_cover.webp"
+       alt="Mersenne's Clavichord cover"
+       caption="Mersenne's Clavichord ([Spotify link](https://open.spotify.com/album/7y2jMKdg6wnGTF2KrCVYo6?si=hEyxXMsyRw-WyHlUFqLZvw))"
+       width="400"
+       link="http://www.charlston.co.uk/Mersenne.htm"
+       target="_blank"
+>}}
 
 ## Background and History
 
@@ -51,7 +57,7 @@ This is a form of vibrato unique to the clavichord, and is sometimes called "beb
 ### Why Model a Clavichord?
 
 Even though there are still instrument makers keeping the art of clavichord building alive, many aspects of their construction have been lost to time. 
-Several modern clavichord builders, such as [Peter Bavington](https://www.peter-bavington.co.uk/) and [Pierre Verbeek](https://harpsichords.weebly.com/), have done extensive work to rediscover these lost techniques.
+Several modern clavichord builders, such as Peter Bavington and [Pierre Verbeek](https://harpsichords.weebly.com/), have done extensive work to rediscover these lost techniques.
 
 Verbeek is an engineer and physicist who turned to clavichord construction in 2004. In 2011, he published a paper titled ["The Urbino Clavichord Revisted"](https://harpsichords.weebly.com/uploads/2/5/0/1/25019733/verbeek_urbino_magnano_nov_2011_ver09_pub.pdf), in which he reverse-engineered how a 15th-century clavichord was built by analyzing an intarsia depicting it.
 
@@ -79,11 +85,11 @@ As far as I know, nobody has created CAD models of clavichords before, so I took
 ### OpenSCAD and Zoo
 
 As much as I love OpenSCAD, I hesitate to recommend it to non-programmers, which is approximately 99% of early music historians.
-OpenSCAD is designed for programmers: all geometry is expressed using a [declarative DSL](https://openscad.org/cheatsheet/), and the editor provides little help in translating your ideas into code.
+OpenSCAD is designed for programmers: all geometry is expressed using a [domain-specific language (DSL)](https://openscad.org/cheatsheet/), and the editor provides little help in translating your ideas into code.
 Although the learning curve isn't as steep as some other CAD programs, it's still considerable for someone without a programming background.
 
 Like OpenSCAD, Zoo is also code-based, but includes several features to make it more accessible to non-programmers. The editor is far more intuitive and interactive, allowing point-and-click editing that automatically generates the appropriate code.
-More interestingly, it integrates with a VLM called [Zookeeper](https://zoo.dev/zookeeper), which can take plain English prose and translate it directly to code.
+More interestingly, it integrates with an LLM called [Zookeeper](https://zoo.dev/zookeeper), which can take plain English prose and translate it directly to using [KCL](https://zoo.dev/docs/kcl-book/intro.html), their DSL.
 
 ### Who is Mersenne?
 
@@ -118,7 +124,7 @@ In a word: poorly.
 But expecting Zookeeper to generate a plausible instrument from Mersenne's sparse and ambiguous description is unreasonable, because until relatively recently, no human could either.
 Some scholars even expressed doubt whether Mersenne was describing an actual instrument, or simply something he imagined.[^7] 
 
-It wasn't until Peter Bavington built a reconstruction in ~2011 that it was clear the instrument Mersenne described was plausible and coherent.
+It wasn't until Peter Bavington built a reconstruction in ~2011 that it was clear the instrument Mersenne described was almost certainly real.
 Bavington explained his reconstruction in his excellent paper [Reconstructing Mersenne's Clavichord](https://www.peter-bavington.co.uk/Mersennepaper.pdf), which formed the basis of my attempts moving forward.
 Without Bavington's work, this model wouldn't have been possible.
 
@@ -152,7 +158,6 @@ I was also unsure of the terminology for the compartment to the right of the too
        camera-orbit="-18.06deg 53.79deg 2.571m" 
        interaction-prompt="none"
 >}}
-
 
 ### Soundbox
 
@@ -224,7 +229,7 @@ The answer is that this clavichord is *fretted*, which means multiple tangents s
 Mersenne's description of which keys were fretted is highly ambiguous. I used Bavington's interpretation:[^8]
 > If we take account of the fact that notes 41 [e2] and 46 [a2] are not included, the most likely meaning is that the top octave is fretted as follows:
 >
->      c2–c#2 / d2–e♭2 / e2 (alone) / f 2–f#2 / g2–g#2 / a2 (alone) / b♭2–b2–c3 (three together).
+>      c2–c#2 / d2–e♭2 / e2 (alone) / f2–f#2 / g2–g#2 / a2 (alone) / b♭2–b2–c3 (three together).
 > ...
 >
 > Both Boxall and Brauchli propose that the fretting continued downwards with the same pattern until the 18th course (f–f#), in which case the number of notes and courses matches very nicely; this seemed the most likely solution, and I planned the reconstruction accordingly.
@@ -240,7 +245,7 @@ To support the strings, the clavichord has five bridges, which transfer vibratio
 
 Again, Zookeeper quickly translated this [into a KCL function](https://github.com/MasonM/mersennes_clavichord/blob/662629c9f6fc161ece2cd8dec83e763ab1c6bded/string_utils.kcl#L37-L72).
 
-While Zookeeper had absolutely no trouble with these kind of mathematical exercises, it did struggle slightly with the shape of the bridges, particularly with respect to the sloping edges.
+While Zookeeper had no trouble with these kind of mathematical exercises, it did struggle slightly with the shape of the bridges, particularly with respect to the sloping edges.
 The result I ended up seems fairly close to Bavington's reproduction.
 Not having built a clavichord myself, I'm unsure how important the shape of the bridges really is, but I hope to find out soon!
 
@@ -296,10 +301,10 @@ fn equalTemperedFrequencyForKey(@keyIdx) {
 
 [The code for meantone](https://github.com/MasonM/mersennes_clavichord/blob/662629c9f6fc161ece2cd8dec83e763ab1c6bded/temperament.kcl#L5-L29) is more complex, and I'm not fully confident it's correct.
 
-With the frequency out of the way, that leaves the string density and tension as the two remaining variables. 
+With the frequency out of the way, that leaves the string density and tension as the two remaining variables in Meresenne's equation. 
 If this were an unfretted clavichord, we could treat the tension as almost a free variable, since you can tune each key independently.
 
-That's not the case with a fretted clavichord. Changing the tension on a string (or course) affects all the keys that share that string.
+That's not the case with a fretted clavichord. Changing the tension on a string affects all the keys that share that string.
 Sometimes you can work around that by bending the tangents sideways to alter the sounding length, but that quickly ruins the key levers.[^12]
 To change the temperament on a fretted clavichord without damaging it, you need to reposition the tangents, and the key levers supporting them.
 
@@ -378,7 +383,10 @@ Putting all this together, we get the following.
        interaction-prompt="none"
 >}}
 
-### All the rest
+### All the Rest
+
+With the most interesting components done, that leaves the balance bar, the balance pins, the frontboard, the rack, the slots, and the back rail. 
+I won't go into detail into each of these, except to add that the rack was the biggest challenge due to how it's angled. The Urbino clavichord (and nearly all other clavichords I've seen) has a straight rack, which is much easier to model.
 
 {{< 3d-model
        src="/clavichord/models/mersennes_clavichord.glb"
@@ -387,14 +395,23 @@ Putting all this together, we get the following.
        camera-orbit="-18.06deg 53.79deg 2.571m" 
        interaction-prompt="none"
 >}}
+
 ### What's Missing?
 
+There's still a lot missing here, notably:
+1. The left-hand bridge 
+2. The two oblique pieces in the rear corners
+3. Sloping soundboard. The soundboard on this model is flat, which Bavington says won't work:
+> This is unavoidable, given the low treble bridge and the long distance between it and the tuning pins, and the fact that the strings run directly across the bridge without any bridge-pins or side-bearing.
 
 ## What's Next?
 
+The prize
 
 ## Conclusion
 
+As a layman in machine learning, one of the most surprising developments recently has been the rise of Vision Language Models (VLMs) for CAD work.
+I had assumed that the [symbol grounding problem](https://en.wikipedia.org/wiki/Symbol_grounding_problem) would be an insurmountable barrier for anything require precision modeling, yet there have been several CAD projects for doing exactly that.
 I haven't built this (or any) clavichord before, so it's likely I made mistakes. If you notice any, please [contact me](mailto:masone@masonm.org)! All the code I used to generate these models are open-source and licensed under a permissive license.
 
 [^1]: Until I edited it, the [Wikipedia article on the clavichord](https://en.wikipedia.org/wiki/Clavichord) claimed it was invented in the early 14th century. I read both sources it cited, and neither substantiates that claim. Both state that the first unambiguous evidence was in the early 15th century. It's probable it was invented earlier, but exact dating is difficult because literary sources of that time used the terms "clavichord" and "monochord" interchangeably.
@@ -407,5 +424,5 @@ I haven't built this (or any) clavichord before, so it's likely I made mistakes.
 [^8]: Bavington, Peter, "Reconstructing Mersenne's Clavichord". Page 12-13.
 [^9]: Rasch, Rudolf. (2006). Tuning and temperament. The Cambridge History of Western Music Theory. 
 [^10]: Barbour, J. M. (2004). "Tuning and Temperament: A Historical Survey." United States: Dover Publications. Page 98
-[^11]: I got this from the [the Wikipedia article](https://en.wikipedia.org/wiki/Marin_Mersenne), but it doesn't cite its sources, and I'm having trouble locating one. The closest I've found is Rasch's "Tuning and Temperament", which gives Mersenne's string length tables, but not the closed-form equation. 
+[^11]: I got this claim from [Mersenne's Wikipedia article](https://en.wikipedia.org/wiki/Marin_Mersenne), but it doesn't cite its sources, and I'm having trouble locating one. The closest I've found is Rasch's "Tuning and Temperament", which gives Mersenne's string length tables, but not the closed-form equation. 
 [^12]: Brauchli, Bernard (1998). "The Clavichord", pp. 102
