@@ -26,12 +26,12 @@ If you want to hear what this would sound like, check out the excellent album *M
 ### What's a Clavichord?
 
 The clavichord is a keyboard instrument that was invented at some point before 1404, and flourished for centuries in Europe.[^1]
-It a was a highly expressive instrument, but too quiet for concert use, and gradually faded away with the rise of the piano.[^2]
+It was a highly expressive instrument, but too quiet for concert use, and gradually faded away with the rise of the piano.[^2]
 Despite its weak sound, it was the preferred instrument for many composers, notably C.P.E. Bach, who considered it superior to the piano in many respects.[^3] 
 
 I've been listening to classical music for over 20 years, but I was only vaguely aware of the clavichord until last year, when I randomly stumbled on the album [Clavichord Recital by Gustav Leonhardt](https://open.spotify.com/album/7cr4GFB8PtGqEa4KtfUtzO?si=00c4d272c07a4331).
 I immediately fell in love with that album, but I began to wonder: why is this my first time hearing a clavichord?
-I had heard Bach played on the piano countless times, yet never the clavichord, despite it being the instrument on which he likely wrote many (if not most) of this works. 
+I had heard Bach played on the piano countless times, yet never the clavichord, despite it being the instrument on which he likely wrote many (if not most) of his works. 
 
 At first, I thought the answer was that the piano was simply a superior instrument, so there was no reason to perform Bach on the clavichord anymore.
 But then in Leonhardt's performance of the Sonata in B Minor, I heard what sounded like vibrato.
@@ -64,16 +64,16 @@ Verbeek is an engineer and physicist who turned to clavichord construction in 20
 Verbeek's paper fascinated me, partly because it treated clavichord reconstruction as a puzzle to be solved, and partly from his creative use of math and physics.
 Unlike every other paper I've read, Verbeek included a plethora of measurements and technical drawings.
 Still, even with all these details, I had trouble visualizing certain aspects of the instrument.
-It's very difficult to accurately describe something as complex as a clavichord using only prose and technical drawings, 
+It's very difficult to accurately describe something as complex as a clavichord using only prose and technical drawings.
 
 These days, engineers have largely migrated from technical drawings to CAD software. CAD software has many advantages for describing the kind of objects engineers typically work with:
 1. Accuracy. CAD models can express measurements to an arbitrary level of precision.
 2. Easy modification. The clavichord action diagram shown above is a simplified version of the one shown below. 
 3. Error checking. Most CAD software lets you express the different parts of an object in terms of constraints and equations, which it will check for you automatically.
-4. Visualization. Nearly all CAD programs let you quickly render a 3D model. They say a photograph is worth a thousands words, and one can say the same about 3D models and technical drawings.
+4. Visualization. Nearly all CAD programs let you quickly render a 3D model. They say a photograph is worth a thousand words, and one can say the same about 3D models and technical drawings.
 
 Although clavichords are clearly not the kind of objects engineers typically work with, all these advantages are just as applicable to the work of people like Verbeek and Bavington.
-As far as I know, nobody has created CAD models of clavichords before, so I took it upon myself to turn Verbeek's paper into a model using [OpenSCAD](https://openscad.org/). After several weekends of work, I ended up with this:
+As far as I know, nobody has created CAD models of a clavichord before, so I took it upon myself to turn Verbeek's paper into a model using [OpenSCAD](https://openscad.org/). After several weekends of work, I ended up with this:
 {{< 3d-model
        src="/clavichord/models/urbino_clavichord.glb"
        camera-orbit="-20.92deg 44.33deg 1300m"
@@ -89,7 +89,7 @@ OpenSCAD is designed for programmers: all geometry is expressed using a [domain-
 Although the learning curve isn't as steep as some other CAD programs, it's still considerable for someone without a programming background.
 
 Like OpenSCAD, Zoo is also code-based, but it includes several features to make it more accessible to non-programmers. The editor is far more intuitive and interactive, allowing point-and-click editing that automatically generates the appropriate code.
-More interestingly, it integrates with an LLM called [Zookeeper](https://zoo.dev/zookeeper), which can take plain English prose and translate it directly to using [KCL](https://zoo.dev/docs/kcl-book/intro.html), their DSL.
+More interestingly, it integrates with an LLM called [Zookeeper](https://zoo.dev/zookeeper), which can take plain English prose and translate it directly to [KCL](https://zoo.dev/docs/kcl-book/intro.html), their DSL.
 
 ### Who is Mersenne?
 
@@ -103,7 +103,7 @@ For the contest, the clavichord I decided to model was described by the French p
        target="_blank"
 >}}
 
-If you're a programmer like me, you've probably heard of "Mersenne primes": prime numbers of the form \(M_n = 2^n -1\). Mersenne primes were one of Meresenne's many contributions to math, but the application of math to music was what interested him the most.[^5]
+If you're a programmer like me, you've probably heard of "Mersenne primes": prime numbers of the form \(M_n = 2^n -1\). Mersenne primes were one of Mersenne's many contributions to math, but the application of math to music was what interested him the most.[^5]
 Mersenne sought to establish a science of music, and his work formed the root of modern acoustics.[^6] 
 
 ## Modeling the Clavichord
@@ -124,7 +124,7 @@ In a word: poorly.
 But expecting Zookeeper to generate a plausible instrument from Mersenne's sparse and ambiguous description is unreasonable, because until recently, no human could either.
 Some scholars even expressed doubt whether Mersenne was describing an actual instrument, or simply something he imagined.[^7] 
 
-It wasn't until Peter Bavington built a reconstruction in ~2011 that it was clear the instrument Mersenne described was almost certainly real.
+It wasn't until Peter Bavington built a reconstruction around 2011 that it was clear the instrument Mersenne described was almost certainly real.
 Bavington explained his reconstruction in his excellent paper [Reconstructing Mersenne's Clavichord](https://www.peter-bavington.co.uk/Mersennepaper.pdf), which formed the basis of my attempts moving forward.
 Without Bavington's work, this model wouldn't have been possible.
 
@@ -145,9 +145,9 @@ Zookeeper tends to avoid code reuse, so to make edits easier, I created a [`cube
 
 ### Toolbox and Right Compartment
 
-The left-side of the clavichord has a rectangular toolbox, which was typically used to hold spare parts and tools.
+The left side of the clavichord has a rectangular toolbox, which was typically used to hold spare parts and tools.
 Bavington's reconstruction had a lid on the toolbox with a knob to open it, which I reproduced here.
-I didn't know the appropriate terminology for the ornamentation around the lid, so I told Zookeeper to created a "stepped terrace" effect, with three steps leading to the base. Zookeeper handled that well.
+I didn't know the appropriate terminology for the ornamentation around the lid, so I told Zookeeper to create a "stepped terrace" effect, with three steps leading to the base. Zookeeper handled that well.
 
 I was also unsure of the terminology for the compartment to the right of the toolbox, so I called it the "right compartment". It shares the same ornamentation as the toolbox, but without a knob.
 
@@ -245,8 +245,8 @@ To support the strings, the clavichord has five bridges, which transfer vibratio
 
 Again, Zookeeper quickly translated this [into a KCL function](https://github.com/MasonM/mersennes_clavichord/blob/662629c9f6fc161ece2cd8dec83e763ab1c6bded/string_utils.kcl#L37-L72).
 
-While Zookeeper had no trouble with these kind of mathematical exercises, it did struggle slightly with the shape of the bridges, particularly with respect to the sloping edges.
-The result I ended up seems fairly close to Bavington's reproduction.
+While Zookeeper had no trouble with these kinds of mathematical exercises, it did struggle slightly with the shape of the bridges, particularly with respect to the sloping edges.
+The result I ended up with seems fairly close to Bavington's reproduction.
 Not having built a clavichord myself, I'm unsure how important the shape of the bridges really is, but I hope to find out soon!
 
 {{< 3d-model
@@ -301,7 +301,7 @@ fn equalTemperedFrequencyForKey(@keyIdx) {
 
 [The code for meantone](https://github.com/MasonM/mersennes_clavichord/blob/662629c9f6fc161ece2cd8dec83e763ab1c6bded/temperament.kcl#L5-L29) is more complex, and I'm not fully confident it's correct.
 
-With the frequency out of the way, that leaves the string density and tension as the two remaining variables in Meresenne's equation. 
+With the frequency out of the way, that leaves the string density and tension as the two remaining variables in Mersenne's equation. 
 If this were an unfretted clavichord, we could treat the tension as almost a free variable, since you can tune each key independently.
 
 That's not the case with a fretted clavichord. Changing the tension on a string affects all the keys that share that string.
@@ -351,7 +351,7 @@ T_x(i+1) &= B_x(i+1) - L(i+1) \\
 \end{aligned}
 $$
 
-This is the final equation implemented by the `tangentXForKeyFn()` function in [string_utils.kcl](./string_utils.kcl).
+This is the final equation implemented by the `tangentXForKeyFn()` function in [string_utils.kcl](https://github.com/MasonM/mersennes_clavichord/blob/662629c9f6fc161ece2cd8dec83e763ab1c6bded/string_utils.kcl#L123-L139).
 
 ```rust
 fn tangentXForKeyFn(@keyIdx) {
@@ -402,18 +402,18 @@ There's still a lot missing here, notably:
 1. The left-hand bridge 
 2. The two oblique compartments in the rear corners
 3. The lid
-4. Sloping soundboard. The soundboard on this model is flat, which Bavington says won't work:
+4. A sloping soundboard. The soundboard on this model is flat, which Bavington says won't work:
 > This is unavoidable, given the low treble bridge and the long distance between it and the tuning pins, and the fact that the strings run directly across the bridge without any bridge-pins or side-bearing.
 
-That's just the things I know. 
+Those are just the things I know. 
 I haven't built this (or any) clavichord before, so it's likely there's a lot more I don't know about.
 If you notice anything, please [contact me](mailto:mason+clavichord@masonm.org)! 
 
 ## Conclusion
 
 Overall, I was impressed with what Zoo and Zookeeper can do. 
-As a layman in machine learning, I had assumed that the [symbol grounding problem](https://en.wikipedia.org/wiki/Symbol_grounding_problem) would be a nearly insurmountable barrier for the use of LLMs in CAD work, but Zookeeper has proven me wrong.
-Even though modeling historical instruments is clearly outside Zoo's intended use case, I can see it being a very useful tool to musicologists.
+As a layman in machine learning, I had assumed that the [symbol grounding problem](https://en.wikipedia.org/wiki/Symbol_grounding_problem) would be a nearly insurmountable barrier to the use of LLMs in CAD work, but Zookeeper has proven me wrong.
+Even though modeling historical instruments is clearly outside Zoo's intended use case, I can see it being a very useful tool for musicologists.
 
 My goal now is to build this instrument in real life. The prize for the contest was a [Bambu Lab H2C](https://us.store.bambulab.com/products/h2c), which I donated to [Seattle Makers](https://seattlemakers.org/) in exchange for help with this.
 
