@@ -2,7 +2,7 @@
 title: "Modeling Mersenne's Clavichord"
 date: 2026-06-14
 author: Mason Malone
-description: TODO
+description: My experience creating a 3D CAD model of a 17th-century clavichord using Zoo
 ---
 
 ## Introduction
