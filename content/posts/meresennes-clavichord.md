@@ -84,7 +84,7 @@ I couldn't find any published CAD models of a clavichord, so I took it upon myse
 
 ### OpenSCAD and Zoo
 
-As much as I love OpenSCAD, I hesitate to recommend it to non-programmers, which is approximately 99% of musicologists.
+As much as I love OpenSCAD, I hesitate to recommend it to non-programmers, which is probably >90% of musicologists.
 OpenSCAD is designed for programmers: all geometry is expressed using a [domain-specific language (DSL)](https://openscad.org/cheatsheet/), and the editor provides little help in translating your ideas into code.
 Although the learning curve isn't as steep as some other CAD programs, it's still considerable for someone without a programming background.
 
@@ -307,7 +307,7 @@ If this were an unfretted clavichord, we could treat the tension as almost a fre
 
 That's not the case with a fretted clavichord. Changing the tension on a string affects all the keys that share that string.
 Sometimes you can work around that by bending the tangents sideways to alter the sounding length, but that quickly ruins the key levers.[^12]
-To change the temperament on a fretted clavichord without damaging it, you need to reposition the tangents, and the key levers supporting them.
+To change the temperament on a fretted clavichord without damaging it, you typically need to reposition the tangents, and the key levers supporting them.
 
 #### Solving for the Sounding Length
 
