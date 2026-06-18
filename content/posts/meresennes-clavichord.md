@@ -423,14 +423,14 @@ My tenatative plan is to use a laser cutter for the keyboard and key levers, whi
 
 
 [^1]: Until I edited it, the [Wikipedia article on the clavichord](https://en.wikipedia.org/wiki/Clavichord) claimed it was invented in the early 14th century. I read both sources it cited, and neither substantiates that claim. Both state that the first unambiguous evidence was in the early 15th century. It's probable it was invented earlier, but exact dating is difficult because literary sources of that time used the terms "clavichord" and "monochord" interchangeably.
-[^2]: Brauchli, Bernard (1998). "The Clavichord", pp. 1
-[^3]: Ibid., 216-217
-[^4]: Ibid., 267
-[^5]: A. Malet and D. Cozzoli, “Mersenne and Mixed Mathematics,” Perspectives on Science, vol. 18, no. 1, pp. 3, May 2010, doi: 10.1162/posc.2010.18.1.1.
-[^6]: Bohn, Dennis A. (1988). "Environmental Effects on the Speed of Sound". Journal of the Audio Engineering Society. 36 (4): 223–231
-[^7]: Edwin M. Ripin et al., Early Keyboard Instruments (London: Macmillan, 1989), p. 155.
-[^8]: Bavington, Peter, "Reconstructing Mersenne's Clavichord". Page 12-13.
-[^9]: Rasch, Rudolf. (2006). Tuning and temperament. The Cambridge History of Western Music Theory. 
-[^10]: Barbour, J. M. (2004). "Tuning and Temperament: A Historical Survey." United States: Dover Publications. Page 98
-[^11]: I got this claim from [Mersenne's Wikipedia article](https://en.wikipedia.org/wiki/Marin_Mersenne), but it doesn't cite its sources, and I'm having trouble locating one. The closest I've found is Rasch's "Tuning and Temperament", which gives Mersenne's string length tables, but not the closed-form equation. 
-[^12]: Brauchli, Bernard (1998). "The Clavichord", pp. 102
+[^2]: Brauchli, Bernard. *The Clavichord*. (Cambridge University Press, 1998), 1.
+[^3]: Ibid., 216-217.
+[^4]: Ibid., 267.
+[^5]: Antoni Malet and Daniele Cozzoli, "Mersenne and Mixed Mathematics," *Perspectives on Science* 18, no. 1 (2010): 1-8, https://muse.jhu.edu/article/372574.
+[^6]: Bohn, Dennis A., "Environmental effects on the speed of sound," *J. Audio Eng. Soc* 36, no. 4 (1988): 223-231.
+[^7]: Ripin, Edwin M., *Early keyboard instruments*, (WW Norton & Company, 1989), 155.
+[^8]: Bavington, Peter, "Reconstructing Mersenne's Clavichord," *De Clavicordio X* (2012), 12-13.
+[^9]: Rasch, Rudolf, "Tuning and temperament," *The Cambridge History of Western Music Theory* (2006), Kobo
+[^10]: Barbour, James Murray, *Tuning and temperament: A historical survey*, (Courier Corporation, 2004), 98.
+[^11]: I got this claim from [Mersenne's Wikipedia article](https://en.wikipedia.org/wiki/Marin_Mersenne), but it doesn't cite its sources, and I'm having trouble locating one. The closest I've found is Rasch's "Tuning and Temperament", which gives Mersenne's string length tables, but not the closed-form equation
+[^12]: Brauchli, *The Clavichord*, 102.
