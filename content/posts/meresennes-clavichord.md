@@ -7,11 +7,11 @@ description: TODO
 
 ## Introduction
 
-I recently took part in a CAD contest hosted by [Zoo](https://zoo.dev/), a modern CAD program intended for hardware design.
+I recently took part in a CAD contest hosted by [Zoo](https://zoo.dev/), a very interesting CAD program intended for hardware design.
 My submission, [Mersenne's Clavichord](https://zoo.dev/aquarium/8a3d0547-5ac6-41f7-82f4-90084e617db2), won first place.
 It's a reconstruction of a 17th-century clavichord desribed by [Marin Mersenne](https://en.wikipedia.org/wiki/Marin_Mersenne). This post will describe my experiences with Zoo and how I approached the model.
 
-If you want to hear what this should sound like, check out the excellent album *Mersenne's Clavichord: Keyboard Music in 16th & 17th Century France*, which was performed on a reconstruction of this same instrument built by [Peter Bavington](https://www.peter-bavington.co.uk/).
+If you want to hear what this would sound like, check out the excellent album *Mersenne's Clavichord: Keyboard Music in 16th & 17th Century France*, which was performed on a reconstruction of this same instrument built by [Peter Bavington](https://www.peter-bavington.co.uk/).
 {{< figure
        src="/clavichord/images/mersennes_clavichord_cover.webp"
        alt="Mersenne's Clavichord cover"
@@ -84,11 +84,11 @@ As far as I know, nobody has created CAD models of clavichords before, so I took
 
 ### OpenSCAD and Zoo
 
-As much as I love OpenSCAD, I hesitate to recommend it to non-programmers, which is approximately 99% of early music historians.
+As much as I love OpenSCAD, I hesitate to recommend it to non-programmers, which is approximately 99% of musicologists.
 OpenSCAD is designed for programmers: all geometry is expressed using a [domain-specific language (DSL)](https://openscad.org/cheatsheet/), and the editor provides little help in translating your ideas into code.
 Although the learning curve isn't as steep as some other CAD programs, it's still considerable for someone without a programming background.
 
-Like OpenSCAD, Zoo is also code-based, but includes several features to make it more accessible to non-programmers. The editor is far more intuitive and interactive, allowing point-and-click editing that automatically generates the appropriate code.
+Like OpenSCAD, Zoo is also code-based, but it includes several features to make it more accessible to non-programmers. The editor is far more intuitive and interactive, allowing point-and-click editing that automatically generates the appropriate code.
 More interestingly, it integrates with an LLM called [Zookeeper](https://zoo.dev/zookeeper), which can take plain English prose and translate it directly to using [KCL](https://zoo.dev/docs/kcl-book/intro.html), their DSL.
 
 ### Who is Mersenne?
@@ -121,7 +121,7 @@ To start, I tried feeding Zookeeper the drawing shown above, along with Mersenne
 >}}
 
 In a word: poorly.
-But expecting Zookeeper to generate a plausible instrument from Mersenne's sparse and ambiguous description is unreasonable, because until relatively recently, no human could either.
+But expecting Zookeeper to generate a plausible instrument from Mersenne's sparse and ambiguous description is unreasonable, because until recently, no human could either.
 Some scholars even expressed doubt whether Mersenne was describing an actual instrument, or simply something he imagined.[^7] 
 
 It wasn't until Peter Bavington built a reconstruction in ~2011 that it was clear the instrument Mersenne described was almost certainly real.
@@ -400,19 +400,27 @@ I won't go into detail into each of these, except to add that the rack was the b
 
 There's still a lot missing here, notably:
 1. The left-hand bridge 
-2. The two oblique pieces in the rear corners
-3. Sloping soundboard. The soundboard on this model is flat, which Bavington says won't work:
+2. The two oblique compartments in the rear corners
+3. The lid
+4. Sloping soundboard. The soundboard on this model is flat, which Bavington says won't work:
 > This is unavoidable, given the low treble bridge and the long distance between it and the tuning pins, and the fact that the strings run directly across the bridge without any bridge-pins or side-bearing.
 
-## What's Next?
-
-The prize
+That's just the things I know. 
+I haven't built this (or any) clavichord before, so it's likely there's a lot more I don't know about.
+If you notice anything, please [contact me](mailto:mason+clavichord@masonm.org)! 
 
 ## Conclusion
 
-As a layman in machine learning, one of the most surprising developments recently has been the rise of Vision Language Models (VLMs) for CAD work.
-I had assumed that the [symbol grounding problem](https://en.wikipedia.org/wiki/Symbol_grounding_problem) would be an insurmountable barrier for anything require precision modeling, yet there have been several CAD projects for doing exactly that.
-I haven't built this (or any) clavichord before, so it's likely I made mistakes. If you notice any, please [contact me](mailto:masone@masonm.org)! All the code I used to generate these models are open-source and licensed under a permissive license.
+Overall, I was impressed with what Zoo and Zookeeper can do. 
+As a layman in machine learning, I had assumed that the [symbol grounding problem](https://en.wikipedia.org/wiki/Symbol_grounding_problem) would be a nearly insurmountable barrier for the use of LLMs in CAD work, but Zookeeper has proven me wrong.
+Even though modeling historical instruments is clearly outside Zoo's intended use case, I can see it being a very useful tool to musicologists.
+
+My goal now is to build this instrument in real life. The prize for the contest was a [Bambu Lab H2C](https://us.store.bambulab.com/products/h2c), which I donated to [Seattle Makers](https://seattlemakers.org/) in exchange for help with this.
+
+But this is a relatively large and complex instrument, so I'm going to start with simpler ones first to get experience.
+I'm currently working on a model of a keyed monochord based on a 15th-century design, which has the same action as a clavichord.
+My tenatative plan is to use a laser cutter for the keyboard and key levers, which I anticipate will be the trickiest part.
+
 
 [^1]: Until I edited it, the [Wikipedia article on the clavichord](https://en.wikipedia.org/wiki/Clavichord) claimed it was invented in the early 14th century. I read both sources it cited, and neither substantiates that claim. Both state that the first unambiguous evidence was in the early 15th century. It's probable it was invented earlier, but exact dating is difficult because literary sources of that time used the terms "clavichord" and "monochord" interchangeably.
 [^2]: Brauchli, Bernard (1998). "The Clavichord", pp. 1
