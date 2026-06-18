@@ -9,7 +9,7 @@ description: My experience creating a 3D CAD model of a 17th-century clavichord 
 
 I recently took part in a CAD contest hosted by [Zoo](https://zoo.dev/), a very interesting CAD program intended for hardware design.
 My submission, [Mersenne's Clavichord](https://zoo.dev/aquarium/8a3d0547-5ac6-41f7-82f4-90084e617db2), won first place.
-It's a reconstruction of a 17th-century clavichord desribed by [Marin Mersenne](https://en.wikipedia.org/wiki/Marin_Mersenne). This post will describe my experiences with Zoo and how I approached the model.
+It's a reconstruction of a 17th-century clavichord described by [Marin Mersenne](https://en.wikipedia.org/wiki/Marin_Mersenne). This post will describe my experiences with Zoo and how I approached the model.
 
 If you want to hear what this would sound like, check out the excellent album *Mersenne's Clavichord: Keyboard Music in 16th & 17th Century France*, which was performed on a reconstruction of this same instrument built by [Peter Bavington](https://www.peter-bavington.co.uk/).
 {{< figure
@@ -59,7 +59,7 @@ This is a form of vibrato unique to the clavichord, and is sometimes called "beb
 Even though there are still instrument makers keeping the art of clavichord building alive, many aspects of their construction have been lost to time. 
 Several modern clavichord builders, such as Peter Bavington and [Pierre Verbeek](https://harpsichords.weebly.com/), have done extensive work to rediscover these lost techniques.
 
-Verbeek is an engineer and physicist who turned to clavichord construction in 2004. In 2011, he published a paper titled ["The Urbino Clavichord Revisted"](https://harpsichords.weebly.com/uploads/2/5/0/1/25019733/verbeek_urbino_magnano_nov_2011_ver09_pub.pdf), in which he reverse-engineered how a 15th-century clavichord was built by analyzing an intarsia depicting it.
+Verbeek is an engineer and physicist who turned to clavichord construction in 2004. In 2011, he published a paper titled ["The Urbino Clavichord Revisited"](https://harpsichords.weebly.com/uploads/2/5/0/1/25019733/verbeek_urbino_magnano_nov_2011_ver09_pub.pdf), in which he reverse-engineered how a 15th-century clavichord was built by analyzing an intarsia depicting it.
 
 Verbeek's paper fascinated me, partly because it treated clavichord reconstruction as a puzzle to be solved, and partly from his creative use of math and physics.
 Unlike every other paper I've read, Verbeek included a plethora of measurements and technical drawings.
@@ -178,7 +178,7 @@ These were straightforward to model, as each part can be modeled using the `cube
 The clavichord has 49 keys, ranging from \(C\) to \(c^3\), with a standard 12-note octave.
 The number of octaves is therefore \(\lfloor \frac{49}{12}\rfloor=4\), the number of natural keys is \(4*7+1=29\), and the number of accidental keys is \(4*5=20\).
 
-To find the $x$ coordinate of a natual key at index $naturalIdx$, we can simply multiply the index by the width of each natural key, which we can calculate by dividing the keywell length by the number of keys, and adding that to an offset $keyStartX$. Here's the resulting KCL code:
+To find the $x$ coordinate of a natural key at index $naturalIdx$, we can simply multiply the index by the width of each natural key, which we can calculate by dividing the keywell length by the number of keys, and adding that to an offset $keyStartX$. Here's the resulting KCL code:
 ```rust
 fn naturalKeyX(@naturalIdx) {
   return keyStartX + naturalIdx * keywellLength / numNaturalKeys
@@ -419,7 +419,7 @@ My goal now is to build this instrument in real life. The prize for the contest 
 
 But this is a relatively large and complex instrument, so I'm going to start with simpler ones first to get experience.
 I'm currently working on a model of a keyed monochord based on a 15th-century design, which has the same action as a clavichord.
-My tenatative plan is to use a laser cutter for the keyboard and key levers, which I anticipate will be the trickiest part.
+My tentative plan is to use a laser cutter for the keyboard and key levers, which I anticipate will be the trickiest part.
 
 
 [^1]: Until I edited it, the [Wikipedia article on the clavichord](https://en.wikipedia.org/wiki/Clavichord) claimed it was invented in the early 14th century. I read both sources it cited, and neither substantiates that claim. Both state that the first unambiguous evidence was in the early 15th century. It's probable it was invented earlier, but exact dating is difficult because literary sources of that time used the terms "clavichord" and "monochord" interchangeably.
