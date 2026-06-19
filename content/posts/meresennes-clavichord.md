@@ -70,7 +70,7 @@ These days, engineers have largely migrated from technical drawings to CAD softw
 1. Accuracy. CAD models can express measurements to an arbitrary level of precision.
 2. Easy modification. The clavichord action diagram shown above is a simplified version of the one shown below.
 3. Error checking. Most CAD software lets you express the different parts of an object in terms of constraints and equations, which it will check for you automatically.
-4. Visualization. Nearly all CAD programs let you quickly render a 3D model. They say a photograph is worth a thousand words, and one can say the same about 3D models and technical drawings.
+4. Visualization. Nearly all CAD programs let you quickly render a 3D model, which allows quick verification.
 
 Although clavichords are clearly not the kind of objects engineers typically work with, all these advantages are just as applicable to the work of people like Verbeek and Bavington.
 I couldn't find any published CAD models of a clavichord, so I took it upon myself to turn Verbeek's paper into a model using [OpenSCAD](https://openscad.org/). After several weekends of work, I ended up with this:
@@ -93,7 +93,7 @@ More interestingly, it integrates with an LLM called [Zookeeper](https://zoo.dev
 
 ### Who is Mersenne?
 
-For the contest, the clavichord I decided to model was described by the French polymath [Marin Mersenne](https://en.wikipedia.org/wiki/Marin_Mersenne) in his 1636 treatise [Harmonie universelle](https://en.wikipedia.org/wiki/Harmonie_universelle).
+For the contest, the clavichord I decided to model was described by the French polymath [Marin Mersenne](https://en.wikipedia.org/wiki/Marin_Mersenne) in his 1636 treatise *[Harmonie universelle](https://en.wikipedia.org/wiki/Harmonie_universelle)*.
 {{< figure
        src="/clavichord/images/mersennes_clavichord_cropped.webp"
        alt="Mersenne's drawing of the clavichord"
@@ -110,7 +110,7 @@ Mersenne sought to establish a science of music, and his work helped lay the fou
 
 ### First Attempt
 
-To start, I tried feeding Zookeeper the drawing shown above, along with Mersenne's description in the original French. How did it do?
+To start, I tried feeding Zookeeper the drawing shown above, along with Mersenne's description in the original French. The result was incoherent:
 
 {{< figure
        src="/clavichord/images/first_attempt.webp"
@@ -120,11 +120,11 @@ To start, I tried feeding Zookeeper the drawing shown above, along with Mersenne
        target="_blank"
 >}}
 
-In a word: poorly.
 But expecting Zookeeper to generate a plausible instrument from Mersenne's sparse and ambiguous description is unreasonable, because until recently, no human could either.
-Some scholars even expressed doubt whether Mersenne was describing an actual instrument, or simply something he imagined.[^7]
+Some scholars even questioned whether Mersenne was describing an actual instrument, or simply something he imagined.[^7]
+A better question would be "why didn't Mersenne use Zoo?", since all the ambiguities and inconsistencies would have been obvious had he tried to create a CAD model.
 
-It wasn't until Peter Bavington built a reconstruction around 2011 that it was clear the instrument Mersenne described was almost certainly real.
+It wasn't until Peter Bavington built a reconstruction in 2011, 375 years after *Harmonie universelle*, that it was clear the instrument Mersenne described was almost certainly real.
 Bavington explained his reconstruction in his excellent paper [Reconstructing Mersenne's Clavichord](https://www.peter-bavington.co.uk/Mersennepaper.pdf), which formed the basis of my attempts moving forward.
 Without Bavington's work, this model wouldn't have been possible.
 
