@@ -47,7 +47,7 @@ When the other end of the key is pressed, the tangent rises and strikes the stri
        src="/clavichord/models/clavichord_action_diagram.glb"
        camera-orbit="12deg 86.15deg 376.7m"
        caption="Clavichord action ([source code](https://github.com/MasonM/urbino_clavichord/blob/main/clavichord_action_diagram.scad))"
-       style="height: 400px; background-color: #ffffff"
+       style="height: 400px"
        interaction-prompt="auto"
 >}}
        <div class="Hotspot" slot="hotspot-1" data-position="15.703697539125628m 80m 133.9409724806759m" data-normal="-0.1970068245457919m 0m 0.9804021170327936m" data-visibility-attribute="visible">
