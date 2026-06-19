@@ -50,6 +50,22 @@ When the other end of the key is pressed, the tangent rises and strikes the stri
        style="height: 400px; background-color: #ffffff"
        interaction-prompt="auto"
 >}}
+       <div class="Hotspot" slot="hotspot-1" data-position="15.703697539125628m 80m 133.9409724806759m" data-normal="-0.1970068245457919m 0m 0.9804021170327936m" data-visibility-attribute="visible">
+              <div class="HotspotAnnotation">Balance pin</div>
+       </div>
+       <div class="Hotspot" slot="hotspot-2" data-position="188.37195578217177m 80m -44.49993896484381m" data-normal="0m 0m 1m" data-visibility-attribute="visible">
+              <div class="HotspotAnnotation">Tangent</div>
+       </div>
+       <div class="Hotspot" slot="hotspot-3" data-position="187.6699828669767m 80m 73.07150383991234m" data-normal="-0.8480246040715089m 0.5299568575736713m 0m" data-visibility-attribute="visible">
+              <div class="HotspotAnnotation">String</div>
+       </div>
+       <div class="Hotspot" slot="hotspot-4" data-position="153.69734552283512m 80m 197.70083695844846m" data-normal="0m 0.1900905607253247m 0.9817665601980603m" data-visibility-attribute="visible">
+              <div class="HotspotAnnotation">Bridge</div>
+       </div>
+       <div class="Hotspot" slot="hotspot-5" data-position="100.2618822488759m 80m 46.324920924810044m" data-normal="0m 1m 0m" data-visibility-attribute="visible">
+              <div class="HotspotAnnotation">Key lever</div>
+       </div>
+{{< /3d-model >}}
 
 By rocking the key slightly, the player can alter the tension of the string for the duration of the note, which changes the pitch.
 This is a form of vibrato unique to the clavichord, and is sometimes called "bebung".[^4]
@@ -80,7 +96,7 @@ I couldn't find any published CAD models of a clavichord, so I took it upon myse
        caption="The Urbino clavichord ([source code](https://github.com/MasonM/urbino_clavichord/blob/main/clavichord.scad)) ([interactive editor](https://masonm.org/urbino_clavichord.html))"
        style="height: 400px"
        interaction-prompt="auto"
->}}
+/>}}
 
 ### OpenSCAD and Zoo
 
@@ -141,7 +157,7 @@ Zookeeper tends to avoid code reuse, so to make edits easier, I created a [`cube
        style="height: 400px"
        camera-orbit="-18.06deg 53.79deg 2.571m"
        interaction-prompt="none"
->}}
+/>}}
 
 ### Toolbox and Right Compartment
 
@@ -157,7 +173,7 @@ I was also unsure of the terminology for the compartment to the right of the too
        style="height: 400px"
        camera-orbit="-18.06deg 53.79deg 2.571m"
        interaction-prompt="none"
->}}
+/>}}
 
 ### Soundbox
 
@@ -171,7 +187,7 @@ These were straightforward to model, as each part can be modeled using the `cube
        style="height: 400px"
        camera-orbit="-18.06deg 53.79deg 2.571m"
        interaction-prompt="none"
->}}
+/>}}
 
 ### Keyboard
 
@@ -216,7 +232,7 @@ Initially, I used the [map()](https://zoo.dev/docs/kcl-std/functions/std-array-m
        style="height: 400px"
        camera-orbit="-18.06deg 53.79deg 2.571m"
        interaction-prompt="none"
->}}
+/>}}
 
 ### Strings and Bridges
 
@@ -255,7 +271,7 @@ Not having built a clavichord myself, I'm unsure how important the shape of the 
        style="height: 400px"
        camera-orbit="-18.06deg 53.79deg 2.571m"
        interaction-prompt="none"
->}}
+/>}}
 
 ### Key Levers
 
@@ -382,7 +398,7 @@ Putting all this together, we get the following.
        style="height: 400px"
        camera-orbit="-18.06deg 53.79deg 2.571m"
        interaction-prompt="none"
->}}
+/>}}
 
 ### All the Rest
 
@@ -395,7 +411,7 @@ I won't go into detail into each of these, except to add that the rack was the b
        style="height: 400px"
        camera-orbit="-18.06deg 53.79deg 2.571m"
        interaction-prompt="none"
->}}
+/>}}
 
 ### What's Missing?
 

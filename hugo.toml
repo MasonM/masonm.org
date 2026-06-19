@@ -38,3 +38,6 @@ publishDir = 'shellbox/www/masonm.org'
 
 [minify]
   minifyOutput = true
+
+[security]
+  enableInlineShortcodes = true
