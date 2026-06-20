@@ -3,5 +3,5 @@ author = 'Mason Malone'
 [home]
   date_format = '2006-01-02'
   portfolio = true
-  blog = false
+  blog = true
   old_projects = true
