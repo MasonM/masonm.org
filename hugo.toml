@@ -3,7 +3,7 @@ languageCode = 'en-US'
 title = "Mason's Homepage"
 theme = 'moonwalk-hugo'
 disableHugoGeneratorInject = true
-disableKinds = ['rss', 'taxonomy', 'sitemap']
+disableKinds = ['taxonomy', 'sitemap']
 publishDir = 'shellbox/www/masonm.org'
 
 [menus]
@@ -35,9 +35,6 @@ publishDir = 'shellbox/www/masonm.org'
         [markup.goldmark.extensions.passthrough.delimiters]
           block = [['\[', '\]'], ['$$', '$$']]
           inline = [['\(', '\)'], ['$', '$']]
-
-[minify]
-  minifyOutput = true
 
 [security]
   enableInlineShortcodes = true
